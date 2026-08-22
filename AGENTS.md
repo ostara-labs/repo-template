@@ -18,7 +18,7 @@ GitHub "Use this template"; generated projects inherit these rules.
   `[target] skipped (no <marker>)`.
 - Single tests:
   - Rust: `cargo test <name>` from rust/
-  - TypeScript: `pnpm -C typescript exec vitest run <path>`
+  - TypeScript: `cd typescript && pnpm exec vitest run <path>`
   - Elixir: `mix test <path>` from elixir/
   - Python: `uv run pytest <path>::<test_name>` from python/
 

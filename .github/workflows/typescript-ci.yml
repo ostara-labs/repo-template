@@ -41,7 +41,7 @@ jobs:
 
       - name: Set pnpm store path
         if: steps.detect.outputs.present == 'true'
-        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_ENV"
+        run: cd typescript && echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_ENV"
 
       - name: Cache pnpm store
         if: steps.detect.outputs.present == 'true'
@@ -55,25 +55,27 @@ jobs:
       - name: Install dependencies
         if: steps.detect.outputs.present == 'true'
         shell: bash
+        # Run pnpm from inside the package dir so corepack resolves the
+        # version pinned in "packageManager" (repo root has no package.json).
         run: |
-          if [ -f typescript/pnpm-lock.yaml ]; then
-            pnpm -C typescript install --frozen-lockfile
+          if [ -f pnpm-lock.yaml ]; then
+            cd typescript && pnpm install --frozen-lockfile
           else
-            pnpm -C typescript install
+            cd typescript && pnpm install
           fi
 
       - name: Lint
         if: steps.detect.outputs.present == 'true'
-        run: pnpm -C typescript run lint
+        run: cd typescript && pnpm run lint
 
       - name: Typecheck
         if: steps.detect.outputs.present == 'true'
-        run: pnpm -C typescript run typecheck
+        run: cd typescript && pnpm run typecheck
 
       - name: Test
         if: steps.detect.outputs.present == 'true'
-        run: pnpm -C typescript run test
+        run: cd typescript && pnpm run test
 
       - name: Build
         if: steps.detect.outputs.present == 'true'
-        run: pnpm -C typescript run build
+        run: cd typescript && pnpm run build

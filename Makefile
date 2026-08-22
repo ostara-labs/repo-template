@@ -82,7 +82,7 @@ format-typescript: ## Format TypeScript code (biome format --write)
 	elif ! command -v pnpm >/dev/null 2>&1; then \
 		echo "[format-typescript] skipped (pnpm not installed)"; \
 	else \
-		pnpm -C typescript run format; \
+		cd typescript && pnpm run format; \
 	fi
 
 lint-typescript: ## Lint TypeScript code (biome check + tsc --noEmit)
@@ -91,7 +91,7 @@ lint-typescript: ## Lint TypeScript code (biome check + tsc --noEmit)
 	elif ! command -v pnpm >/dev/null 2>&1; then \
 		echo "[lint-typescript] skipped (pnpm not installed)"; \
 	else \
-		pnpm -C typescript run lint && pnpm -C typescript run typecheck; \
+		cd typescript && pnpm run lint && pnpm run typecheck; \
 	fi
 
 test-typescript: ## Test TypeScript code (vitest run)
@@ -100,7 +100,7 @@ test-typescript: ## Test TypeScript code (vitest run)
 	elif ! command -v pnpm >/dev/null 2>&1; then \
 		echo "[test-typescript] skipped (pnpm not installed)"; \
 	else \
-		pnpm -C typescript run test; \
+		cd typescript && pnpm run test; \
 	fi
 
 build-typescript: ## Build TypeScript (tsc -p tsconfig.build.json)
@@ -109,7 +109,7 @@ build-typescript: ## Build TypeScript (tsc -p tsconfig.build.json)
 	elif ! command -v pnpm >/dev/null 2>&1; then \
 		echo "[build-typescript] skipped (pnpm not installed)"; \
 	else \
-		pnpm -C typescript run build; \
+		cd typescript && pnpm run build; \
 	fi
 
 clean-typescript: ## Remove TypeScript artifacts (node_modules, dist, coverage)
