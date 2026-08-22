@@ -1,0 +1,69 @@
+# Contributing
+
+## Environment setup
+
+### Windows
+
+- GNU Make >= 4: `choco install make`
+- Git Bash in PATH — the Makefile recipes are POSIX
+- Line endings are enforced as LF by `.gitattributes`
+
+### Linux
+
+- GNU Make >= 4: `sudo apt install make` (or your distro's package)
+
+### macOS
+
+- GNU Make >= 4: `brew install make` (or Xcode Command Line Tools)
+
+## Toolchains
+
+Install only the toolchains for the stacks you keep:
+
+| Stack | Toolchain |
+|---|---|
+| Rust | rustup stable (pinned by rust-toolchain.toml) |
+| TypeScript | Node 22 + pnpm (via corepack) |
+| Elixir | OTP 27 + Elixir 1.18 |
+| Python | uv |
+
+## Getting started
+
+1. Install pre-commit: `pipx install pre-commit` (or `pip install pre-commit`).
+2. Install hooks: `make hooks`.
+3. Run the full gate: `make ci`.
+
+## Commit convention
+
+Conventional Commits. The type is required; the scope is optional.
+
+| Type | Purpose |
+|---|---|
+| feat | New feature |
+| fix | Bug fix |
+| docs | Documentation |
+| style | Formatting; no behavior change |
+| refactor | Code change; no behavior change |
+| perf | Performance improvement |
+| test | Tests |
+| build | Build system |
+| ci | CI configuration |
+| chore | Maintenance |
+| revert | Revert a commit |
+
+Breaking changes: append `!` to the type, e.g. `feat!: drop Node 20`.
+Scope: optional, e.g. `feat(rust): add greet`.
+
+## Pull requests
+
+Keep PRs small and focused: one logical change per PR. Before opening a PR,
+check the definition of done:
+
+- `make ci` is green locally.
+- Docs updated (README, MANIFEST, ADRs as applicable).
+- No unrelated changes in the PR.
+
+## Releases
+
+Releases are automated by release-please, which derives versions and
+changelogs from Conventional Commits on `main`. Never bump versions manually.

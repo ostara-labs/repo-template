@@ -1,0 +1,79 @@
+name: TypeScript CI
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  typescript:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Detect TypeScript stack
+        id: detect
+        shell: bash
+        run: |
+          if [ -f typescript/package.json ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node
+        if: steps.detect.outputs.present == 'true'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - name: Enable corepack
+        if: steps.detect.outputs.present == 'true'
+        run: corepack enable
+        # Fallback: if corepack is unavailable, install pnpm via `npm install -g pnpm`.
+
+      - name: Set pnpm store path
+        if: steps.detect.outputs.present == 'true'
+        run: echo "STORE_PATH=$(pnpm store path)" >> "$GITHUB_ENV"
+
+      - name: Cache pnpm store
+        if: steps.detect.outputs.present == 'true'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('typescript/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
+        shell: bash
+        run: |
+          if [ -f typescript/pnpm-lock.yaml ]; then
+            pnpm -C typescript install --frozen-lockfile
+          else
+            pnpm -C typescript install
+          fi
+
+      - name: Lint
+        if: steps.detect.outputs.present == 'true'
+        run: pnpm -C typescript run lint
+
+      - name: Typecheck
+        if: steps.detect.outputs.present == 'true'
+        run: pnpm -C typescript run typecheck
+
+      - name: Test
+        if: steps.detect.outputs.present == 'true'
+        run: pnpm -C typescript run test
+
+      - name: Build
+        if: steps.detect.outputs.present == 'true'
+        run: pnpm -C typescript run build

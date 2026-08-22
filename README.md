@@ -1,0 +1,68 @@
+# repo-template
+
+A production-grade multi-language repository template: four optional stacks
+(Rust, TypeScript, Elixir, Python) behind one GNU Make entrypoint, one CI
+pipeline, and one release process. Use it as the starting point for any new
+project — keep the stacks you need, delete the rest, zero Makefile edits.
+
+## What's inside
+
+| Area | Contents |
+|---|---|
+| Stacks | `rust/`, `typescript/`, `elixir/`, `python/` — each optional, auto-detected via its marker file |
+| Tooling | GNU Make, pre-commit, gitleaks, Conventional Commits, release-please |
+| CI/CD | GitHub Actions: lint + test per stack, security scan, release automation |
+| Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, ADRs |
+
+## Quickstart
+
+1. **Create the repository.** Click "Use this template" on GitHub, or clone
+   this repository and push it to a new remote.
+2. **Run the selection pass.** Open MANIFEST.md — your first PR is deciding
+   which stacks to keep. Delete the stacks you do not need plus their CI,
+   Dependabot, and release-please entries (exact instructions in MANIFEST.md).
+3. **Rename placeholders.** Replace `your-org`, `my-app`, `@your-org/my-app`,
+   `:my_app`/`MyApp`, and `my-package`/`my_package` with your real names
+   (table in MANIFEST.md).
+4. **Install hooks.** `make hooks` (requires pre-commit; see CONTRIBUTING.md).
+5. **Push and harden.** Push to `main`, then enable: branch protection
+   (require PRs + status checks `ci` and `gitleaks`), secret scanning with
+   push protection, and Dependabot alerts. Full checklist in MANIFEST.md.
+
+## Commands
+
+| Target | What it does |
+|---|---|
+| `make help` | List all targets |
+| `make hooks` | Install pre-commit hooks |
+| `make format` | Format all kept stacks |
+| `make lint` | Lint all kept stacks |
+| `make test` | Test all kept stacks |
+| `make build` | Build all kept stacks |
+| `make ci` | `lint` + `test` — the full local gate |
+| `make clean` | Remove build artifacts |
+| `make lint-rust` | One stack only (`-typescript`, `-elixir`, `-python` also available) |
+
+Absent stacks print `[target] skipped (no <marker>)` and are ignored.
+
+## Requirements
+
+- GNU Make >= 4
+- pre-commit (Python)
+- Toolchains for the stacks you keep: Rust stable (pinned by
+  rust-toolchain.toml), Node 22 + pnpm, OTP 27 + Elixir 1.18, uv (Python)
+- **Windows:** `choco install make` for GNU Make >= 4, and Git Bash in PATH —
+  the Makefile recipes are POSIX. Line endings are enforced as LF by
+  `.gitattributes`.
+
+## Documentation
+
+- MANIFEST.md — file inventory and bootstrap checklist
+- CONTRIBUTING.md — setup, conventions, PR process
+- SECURITY.md — supported versions and vulnerability reporting
+- docs/ARCHITECTURE.md — layout rationale and CI/CD flow
+- docs/decisions/ — architecture decision records
+
+## License
+
+MIT — see LICENSE.

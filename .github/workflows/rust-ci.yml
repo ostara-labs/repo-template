@@ -1,0 +1,49 @@
+name: Rust CI
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Detect Rust stack
+        id: detect
+        shell: bash
+        run: |
+          if [ -f rust/Cargo.toml ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install Rust toolchain
+        if: steps.detect.outputs.present == 'true'
+        uses: dtolnay/rust-toolchain@stable # trusted moving-ref exception: kept for auto-updating toolchain
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache cargo
+        if: steps.detect.outputs.present == 'true'
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
+        with:
+          workspaces: rust
+
+      - name: Lint
+        if: steps.detect.outputs.present == 'true'
+        run: cd rust && cargo fmt --all -- --check && cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Test
+        if: steps.detect.outputs.present == 'true'
+        run: cd rust && cargo test

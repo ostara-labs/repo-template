@@ -1,0 +1,21 @@
+# Root ignores only. Stack-specific ignores live inside each stack dir
+# (rust/.gitignore, typescript/.gitignore, elixir/.gitignore, python/.gitignore).
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example

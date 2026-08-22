@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    uses: ./.github/workflows/rust-ci.yml
+  typescript:
+    uses: ./.github/workflows/typescript-ci.yml
+  elixir:
+    uses: ./.github/workflows/elixir-ci.yml
+  python:
+    uses: ./.github/workflows/python-ci.yml
