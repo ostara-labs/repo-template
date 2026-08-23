@@ -5,6 +5,11 @@ A production-grade multi-language repository template: four optional stacks
 pipeline, and one release process. Use it as the starting point for any new
 project — keep the stacks you need, delete the rest, zero Makefile edits.
 
+[![CI](https://github.com/ostara-labs/repo-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ostara-labs/repo-template/actions/workflows/ci.yml)
+[![Security](https://github.com/ostara-labs/repo-template/actions/workflows/security.yml/badge.svg)](https://github.com/ostara-labs/repo-template/actions/workflows/security.yml)
+[![Release](https://img.shields.io/github/v/release/ostara-labs/repo-template)](https://github.com/ostara-labs/repo-template/releases)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ostara-labs/repo-template/badge)](https://api.scorecard.dev/projects/github.com/ostara-labs/repo-template)
+
 ## What's inside
 
 | Area | Contents |
