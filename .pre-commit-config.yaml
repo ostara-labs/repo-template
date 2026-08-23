@@ -1,7 +1,7 @@
 # Pre-commit hook configuration for the repo-template monorepo.
-# Install with: make hooks  (or: pre-commit install)
-# Hook types: pre-commit (file checks), commit-msg (conventional commits),
-# pre-push (branch protection).
+# Install with: make deps && make hooks  (or: pre-commit install)
+# Hook types: pre-commit (file checks + make lint), commit-msg
+# (conventional commits), pre-push (branch protection + make test).
 
 default_install_hook_types: [pre-commit, commit-msg, pre-push]
 fail_fast: false
@@ -31,6 +31,24 @@ repos:
 
   - repo: local
     hooks:
+      # Quality gates. Toolchains are expected for the stacks you keep;
+      # absent stacks print "[target] skipped" and never fail.
+      - id: make-lint
+        name: make lint (lint all kept stacks)
+        entry: make lint
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        always_run: true
+
+      - id: make-test
+        name: make test (test all kept stacks)
+        entry: make test
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+        always_run: true
+
       - id: conventional-commits
         name: check conventional commit message
         language: system
