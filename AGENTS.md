@@ -124,6 +124,9 @@ paths (see CODEOWNERS).
 - Bypass or disable hooks or CI gates.
 - Weaken lint configs to pass.
 - Commit directly to main.
+- Act as a code owner: code ownership of trust-boundary files belongs to
+  humans only, never to automation (a bot approving its own changes
+  defeats the gate).
 
 ## Definition of done
 
