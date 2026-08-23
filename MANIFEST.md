@@ -45,6 +45,8 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/workflows/python-ci.yml | Reusable Python workflow | Delete-if-unused |
 | .github/workflows/security.yml | gitleaks scan | Keep |
 | .github/workflows/release.yml | release-please | Keep |
+| .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
+| .github/workflows/pr-meta.yml | PR title lint + size/risk labels | Keep |
 | .coderabbit.yaml | AI review config (free on public repos) | Keep |
 | release-please-config.json | Release config; one entry per stack | Adapt (delete per-stack entries) |
 | .release-please-manifest.json | Release manifest; one entry per stack | Adapt (delete per-stack entries) |
