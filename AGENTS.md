@@ -33,6 +33,36 @@ GitHub "Use this template"; generated projects inherit these rules.
 - docs/ — architecture/ (ARCHITECTURE.md + decisions/ ADRs),
   guidelines/ (coding-patterns.md), processes/, domain/, how-to/
 
+## Documentation policy
+
+### Mandatory context — read before ANY task
+
+- `MANIFEST.md` — the map: what every notable file is for. Never work
+  blind on file locations.
+- `docs/guidelines/coding-patterns.md` — YAGNI, KISS, clean code, clean
+  architecture, continuous refactoring, zero-defect. Every line written
+  must comply.
+
+`AGENTS.md` itself is always in context by definition. Nothing else is
+mandatory: loading more dilutes attention.
+
+### On demand — consult when the task touches it
+
+| Task involves | Read |
+|---|---|
+| Structure, CI topology, new stack | `docs/architecture/ARCHITECTURE.md` |
+| A significant architectural choice | `docs/architecture/decisions/` (write an ADR) |
+| Runtime behavior, "how does X work" | `docs/processes/` |
+| Domain vocabulary or business rules | `docs/domain/` |
+| Opening the PR (format, checklist) | `CONTRIBUTING.md` |
+
+### Maintenance — keep docs honest in the same PR
+
+- Adding/removing/moving a notable file → update its MANIFEST.md row.
+- Changing behavior → update the affected process/architecture doc.
+- Finding doc drift while working → fix it in the same PR (the code is
+  always the source of truth; stale prose is a bug).
+
 ## Code style
 
 - Rust: rustfmt + clippy `-D warnings`; 4-space indent
@@ -62,7 +92,8 @@ GitHub "Use this template"; generated projects inherit these rules.
 - Add dependencies.
 - Edit `.github/workflows/**`.
 - Change the Makefile contract or `.pre-commit-config.yaml`.
-- Touch LICENSE or MANIFEST.md.
+- Touch LICENSE. (MANIFEST.md maintenance is routine work — see
+  Documentation policy above.)
 
 ### Never
 

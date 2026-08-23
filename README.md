@@ -63,6 +63,9 @@ Absent stacks print `[target] skipped (no <marker>)` and are ignored.
 
 ## Documentation
 
+Suggested reading order for humans: MANIFEST → CONTRIBUTING → the docs
+tree below (guidelines first).
+
 - MANIFEST.md — file inventory and bootstrap checklist
 - CONTRIBUTING.md — setup, conventions, PR process
 - SECURITY.md — supported versions and vulnerability reporting
