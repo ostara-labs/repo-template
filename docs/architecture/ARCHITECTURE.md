@@ -58,9 +58,10 @@ Conventional Commits.
 | Releases | .github/workflows/release.yml + release-please-config.json |
 | Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md |
 | Bootstrap inventory | MANIFEST.md |
-| Decisions | docs/decisions/ (ADRs) |
+| Decisions | docs/architecture/decisions/ (ADRs) |
 
 ## Decisions
 
-Architecture decisions are recorded as ADRs in docs/decisions/ — see
-docs/decisions/0001-record-architecture-decisions.md.
+Architecture decisions are recorded as ADRs in
+docs/architecture/decisions/ — see
+docs/architecture/decisions/0001-record-architecture-decisions.md.
