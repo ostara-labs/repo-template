@@ -66,8 +66,12 @@ Absent stacks print `[target] skipped (no <marker>)` and are ignored.
 - MANIFEST.md — file inventory and bootstrap checklist
 - CONTRIBUTING.md — setup, conventions, PR process
 - SECURITY.md — supported versions and vulnerability reporting
-- docs/ARCHITECTURE.md — layout rationale and CI/CD flow
-- docs/decisions/ — architecture decision records
+- docs/architecture/ARCHITECTURE.md — layout rationale and CI/CD flow
+- docs/architecture/decisions/ — architecture decision records
+- docs/guidelines/ — repo rules (engineering principles: coding-patterns.md)
+- docs/processes/ — process and code-walkthrough docs (code wins over prose)
+- docs/domain/ — business-domain concepts and glossary (fill after bootstrap)
+- docs/how-to/ — task-oriented recipes for humans
 
 ## License
 

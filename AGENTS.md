@@ -30,7 +30,8 @@ GitHub "Use this template"; generated projects inherit these rules.
 - elixir/ — app `:my_app` / `MyApp`; marker mix.exs
 - python/ — package `my-package` / `my_package`; marker pyproject.toml
 - .github/ — workflows, dependabot, issue/PR templates
-- docs/ — ARCHITECTURE.md + decisions/ (ADRs)
+- docs/ — architecture/ (ARCHITECTURE.md + decisions/ ADRs),
+  guidelines/ (coding-patterns.md), processes/, domain/, how-to/
 
 ## Code style
 
