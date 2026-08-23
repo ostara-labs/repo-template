@@ -1,0 +1,25 @@
+# CodeRabbit configuration - https://docs.coderabbit.ai/reference/configuration
+# Free forever on public repositories. Reviews are advisory: they never
+# replace human approval on trust-boundary paths (see CODEOWNERS).
+
+language: en-US
+early_access: false
+
+reviews:
+  profile: chill # assertive flags more; chill keeps signal-to-noise high
+  request_changes_workflow: false # reviews must not block merges by themselves
+  high_level_summary: true
+  review_status: true
+  poem: false
+  path_filters:
+    - "!**/Cargo.lock"
+    - "!**/pnpm-lock.yaml"
+    - "!**/mix.lock"
+    - "!**/uv.lock"
+    - "!**/node_modules/**"
+  auto_review:
+    enabled: true
+    drafts: false
+
+chat:
+  auto_reply: true

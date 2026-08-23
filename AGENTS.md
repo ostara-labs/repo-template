@@ -80,6 +80,24 @@ mandatory: loading more dilutes attention.
 - gitleaks runs in pre-commit and CI (security.yml); a leak blocks the PR.
 - Report vulnerabilities via SECURITY.md.
 
+## PR maturity loop
+
+Every PR goes through an agent/CodeRabbit loop BEFORE human review:
+
+1. Open or refresh the PR — CodeRabbit reviews it automatically (see
+   `.coderabbit.yaml`).
+2. Address every comment: fix the code, or rebut in a written reply when
+   the comment is wrong. Silence is not resolution.
+3. Push — the loop restarts automatically.
+4. The PR is **mature** only when ALL of these hold:
+   - zero unresolved CodeRabbit threads,
+   - every required check is green,
+   - size label is `size/L` or smaller (`size/XL` → split the PR).
+5. Only then request human review. Humans read mature PRs, not drafts.
+
+AI review informs; it never replaces human approval on trust-boundary
+paths (see CODEOWNERS).
+
 ## Boundaries
 
 ### Always
@@ -106,6 +124,7 @@ mandatory: loading more dilutes attention.
 ## Definition of done
 
 - `make ci` is green locally.
+- PR is mature per the PR maturity loop (no open CodeRabbit comments).
 - Docs updated (README, MANIFEST, ADRs as applicable).
 - No unrelated changes in the PR.
 
