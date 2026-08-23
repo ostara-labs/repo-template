@@ -30,6 +30,9 @@ GitHub "Use this template"; generated projects inherit these rules.
 - elixir/ — app `:my_app` / `MyApp`; marker mix.exs
 - python/ — package `my-package` / `my_package`; marker pyproject.toml
 - .github/ — workflows, dependabot, issue/PR templates
+- .devtools/ — submodule (ostara-labs/devtools): shared makefiles + stack
+  CI workflows. Update deliberately via `make devtools-update`, then commit
+  the submodule pointer bump.
 - docs/ — architecture/ (ARCHITECTURE.md + decisions/ ADRs),
   guidelines/ (coding-patterns.md), processes/, domain/, how-to/
 
