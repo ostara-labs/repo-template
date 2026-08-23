@@ -14,6 +14,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Gate: invalid workflow files (bad YAML, unknown action inputs, broken
+  # expressions) invalidate the merge before any stack job even runs.
+  workflow-lint:
+    name: workflow-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Install actionlint (checksum-verified)
+        run: |
+          version=1.7.12
+          curl -sSfL -o actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v${version}/actionlint_${version}_linux_amd64.tar.gz"
+          curl -sSfL -o checksums.txt "https://github.com/rhysd/actionlint/releases/download/v${version}/actionlint_${version}_checksums.txt"
+          grep "actionlint_${version}_linux_amd64.tar.gz" checksums.txt | sha256sum --check --status -
+          tar -xzf actionlint.tar.gz actionlint
+
+      - name: Lint all workflow files
+        run: ./actionlint -no-color
+
   rust:
     uses: ./.github/workflows/rust-ci.yml
   typescript:
