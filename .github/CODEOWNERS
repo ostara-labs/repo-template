@@ -6,7 +6,7 @@
 # explicit approval from a listed owner. Enforcement lives in the
 # "main-protection" branch ruleset ("require review from code owners").
 #
-# Replace @mia-zephyr with your maintainer identity/team when bootstrapping
+# Replace @oloompa with your maintainer identity/team when bootstrapping
 # a new project from this template (see MANIFEST.md).
 
 # Default: no global owner. Add one here if you want every file reviewed.
@@ -15,26 +15,26 @@
 # --- Trust boundary (human approval required) -----------------------------
 
 # CI/CD pipeline definition and classification config itself
-/.github/workflows/            @mia-zephyr
-/.github/trust-boundary.yml    @mia-zephyr
+/.github/workflows/            @oloompa
+/.github/trust-boundary.yml    @oloompa
 
 # Dependency policy
-/.github/dependabot.yml        @mia-zephyr
+/.github/dependabot.yml        @oloompa
 
 # Review-routing rules (self-protecting)
-/.github/CODEOWNERS            @mia-zephyr
+/.github/CODEOWNERS            @oloompa
 
 # Hook configuration (quality gate guardrail). NOTE: /Makefile is
 # deliberately NOT owned - AI agents may extend build targets freely.
-/.pre-commit-config.yaml       @mia-zephyr
+/.pre-commit-config.yaml       @oloompa
 
 # Release automation
-/release-please-config.json    @mia-zephyr
-/.release-please-manifest.json @mia-zephyr
+/release-please-config.json    @oloompa
+/.release-please-manifest.json @oloompa
 
 # Governance and legal
-/LICENSE                       @mia-zephyr
-/SECURITY.md                   @mia-zephyr
+/LICENSE                       @oloompa
+/SECURITY.md                   @oloompa
 
 # Ruleset provisioning script (grants the protections above)
-/scripts/setup-rulesets.sh     @mia-zephyr
+/scripts/setup-rulesets.sh     @oloompa

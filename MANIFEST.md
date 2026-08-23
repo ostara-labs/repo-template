@@ -96,7 +96,7 @@ Repeat for each stack you do not keep.
 | Placeholder | Where |
 |---|---|
 | `your-org` | README.md, typescript/package.json, SECURITY.md, CODE_OF_CONDUCT.md |
-| `@mia-zephyr` | .github/CODEOWNERS (trust-boundary owners) |
+| `@oloompa` | .github/CODEOWNERS (trust-boundary owners) |
 | `my-app` / `my_app` | rust/Cargo.toml, rust/src/lib.rs |
 | `@your-org/my-app` | typescript/package.json |
 | `:my_app` / `MyApp` | elixir/mix.exs, elixir/lib/ |
@@ -108,7 +108,7 @@ Repeat for each stack you do not keep.
 
 After the first push:
 
-- [ ] Replace `@mia-zephyr` in `.github/CODEOWNERS` with your maintainer
+- [ ] Replace `@oloompa` in `.github/CODEOWNERS` with your maintainer
       identity or team. These entries are the trust boundary: PRs touching
       CI workflows, dependency policy, release automation, hook config, or
       governance files require a code-owner approval to merge. Normal PRs
