@@ -30,7 +30,7 @@ Install only the toolchains for the stacks you keep:
 ## Getting started
 
 1. Install pre-commit: `pipx install pre-commit` (or `pip install pre-commit`).
-2. Install hooks: `make hooks`.
+2. Install dependencies and hooks: `make deps && make hooks`.
 3. Run the full gate: `make ci`.
 
 ## Commit convention

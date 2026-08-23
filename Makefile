@@ -21,6 +21,7 @@ help: ## Show this help message
 	@awk 'BEGIN {FS = ":.*##"; printf "\033[1mUsage:\033[0m make [target]\n\n"} /^##@/ {printf "\n\033[1m%s\033[0m\n", substr($$0, 5); next} /^[a-zA-Z_-]+:.*##/ {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 format: format-rust format-typescript format-elixir format-python ## Format code in all present stacks
+deps: deps-rust deps-typescript deps-elixir deps-python ## Install dependencies in all present stacks
 lint: lint-rust lint-typescript lint-elixir lint-python ## Lint all present stacks
 test: test-rust test-typescript test-elixir test-python ## Test all present stacks
 build: build-rust build-typescript build-elixir build-python ## Build all present stacks
@@ -35,6 +36,38 @@ hooks: ## Install git hooks (pre-commit, commit-msg, pre-push)
 		exit 1; \
 	else \
 		pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push; \
+	fi
+
+##@ Dependencies
+
+deps-rust: ## Fetch Rust crates (cargo fetch)
+	@if [ ! -f rust/Cargo.toml ]; then \
+		echo "[deps-rust] skipped (no rust/Cargo.toml)"; \
+	else \
+		cd rust && cargo fetch; \
+	fi
+
+deps-typescript: ## Install TypeScript packages (pnpm install --frozen-lockfile)
+	@if [ ! -f typescript/package.json ]; then \
+		echo "[deps-typescript] skipped (no typescript/package.json)"; \
+	elif ! command -v pnpm >/dev/null 2>&1; then \
+		echo "[deps-typescript] skipped (pnpm not installed)"; \
+	else \
+		cd typescript && pnpm install --frozen-lockfile; \
+	fi
+
+deps-elixir: ## Fetch Elixir dependencies (mix local.hex + mix deps.get)
+	@if [ ! -f elixir/mix.exs ]; then \
+		echo "[deps-elixir] skipped (no elixir/mix.exs)"; \
+	else \
+		cd elixir && mix local.hex --if-missing --force && mix deps.get; \
+	fi
+
+deps-python: ## Create/refresh Python environment (uv sync)
+	@if [ ! -f python/pyproject.toml ]; then \
+		echo "[deps-python] skipped (no python/pyproject.toml)"; \
+	else \
+		cd python && uv sync; \
 	fi
 
 ##@ Rust
@@ -194,7 +227,8 @@ clean-python: ## Remove Python caches (pytest, ruff, __pycache__)
 		find python -type d -name __pycache__ -prune -exec rm -rf {} +; \
 	fi
 
-.PHONY: help hooks format lint test build ci clean \
+.PHONY: help hooks deps format lint test build ci clean \
+	deps-rust deps-typescript deps-elixir deps-python \
 	format-rust lint-rust test-rust build-rust clean-rust \
 	format-typescript lint-typescript test-typescript build-typescript clean-typescript \
 	format-elixir lint-elixir test-elixir build-elixir clean-elixir \

@@ -12,6 +12,7 @@ GitHub "Use this template"; generated projects inherit these rules.
 ## Commands
 
 - `make ci` — full local gate (lint + test). Run before declaring work done.
+- `make deps` — install dependencies for all present stacks (run after clone).
 - `make lint`, `make test`, `make format`, `make build`, `make clean`
 - Per-stack: `make lint-rust`, `make test-typescript`, ... (suffixes:
   -rust, -typescript, -elixir, -python). Absent stacks print

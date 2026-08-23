@@ -40,6 +40,7 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
 |---|---|
 | `make help` | List all targets |
 | `make hooks` | Install pre-commit hooks |
+| `make deps` | Install dependencies in all kept stacks |
 | `make format` | Format all kept stacks |
 | `make lint` | Lint all kept stacks |
 | `make test` | Test all kept stacks |
