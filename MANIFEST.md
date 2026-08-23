@@ -94,7 +94,8 @@ Repeat for each stack you do not keep.
 
 | Placeholder | Where |
 |---|---|
-| `your-org` | README.md, typescript/package.json, .github/CODEOWNERS, SECURITY.md, CODE_OF_CONDUCT.md |
+| `your-org` | README.md, typescript/package.json, SECURITY.md, CODE_OF_CONDUCT.md |
+| `@mia-zephyr` | .github/CODEOWNERS (trust-boundary owners) |
 | `my-app` / `my_app` | rust/Cargo.toml, rust/src/lib.rs |
 | `@your-org/my-app` | typescript/package.json |
 | `:my_app` / `MyApp` | elixir/mix.exs, elixir/lib/ |
@@ -104,15 +105,22 @@ Repeat for each stack you do not keep.
 
 ## Post-bootstrap hardening
 
-After the first push, enable in GitHub:
+After the first push:
 
-- [ ] Branch protection on `main`: require pull requests and status checks
-      `ci` and `gitleaks`.
+- [ ] Replace `@mia-zephyr` in `.github/CODEOWNERS` with your maintainer
+      identity or team. These entries are the trust boundary: PRs touching
+      CI workflows, dependency policy, release automation, hook config, or
+      governance files require a code-owner approval to merge. Normal PRs
+      (code, docs, dependency bumps) need no approval.
+- [ ] Branch protection on `main`: run
+      `bash scripts/setup-rulesets.sh <owner>/<repo>` — creates the
+      "main-protection" ruleset (PRs required, force-push/deletion blocked,
+      status checks required, code-owner review for trust-boundary paths)
+      and the `requires-human-review` label.
 - [ ] Secret scanning with push protection: ON.
 - [ ] Dependabot alerts: ON.
 - [ ] If GitHub Actions cannot create pull requests (common on org repos),
       add a `RELEASE_TOKEN` secret (fine-grained PAT or App token with
       `contents:write` + `pull-requests:write`) — release.yml prefers it over
       GITHUB_TOKEN automatically.
-- [ ] CODEOWNERS enforced.
 - [ ] Default branch is `main`.

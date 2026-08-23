@@ -1,2 +1,40 @@
-# Default owners - everything requires review
-*       @your-org/maintainers
+# CODEOWNERS - ownership-based review routing.
+#
+# Philosophy: normal PRs (dependency bumps, docs, code) merge without a
+# mandatory human approval. Files on the TRUST BOUNDARY - CI pipelines,
+# dependency policy, release automation, security governance - require
+# explicit approval from a listed owner. Enforcement lives in the
+# "main-protection" branch ruleset ("require review from code owners").
+#
+# Replace @mia-zephyr with your maintainer identity/team when bootstrapping
+# a new project from this template (see MANIFEST.md).
+
+# Default: no global owner. Add one here if you want every file reviewed.
+# *       @your-org/maintainers
+
+# --- Trust boundary (human approval required) -----------------------------
+
+# CI/CD pipeline definition and classification config itself
+/.github/workflows/            @mia-zephyr
+/.github/trust-boundary.yml    @mia-zephyr
+
+# Dependency policy
+/.github/dependabot.yml        @mia-zephyr
+
+# Review-routing rules (self-protecting)
+/.github/CODEOWNERS            @mia-zephyr
+
+# Hook configuration (quality gate guardrail). NOTE: /Makefile is
+# deliberately NOT owned - AI agents may extend build targets freely.
+/.pre-commit-config.yaml       @mia-zephyr
+
+# Release automation
+/release-please-config.json    @mia-zephyr
+/.release-please-manifest.json @mia-zephyr
+
+# Governance and legal
+/LICENSE                       @mia-zephyr
+/SECURITY.md                   @mia-zephyr
+
+# Ruleset provisioning script (grants the protections above)
+/scripts/setup-rulesets.sh     @mia-zephyr
