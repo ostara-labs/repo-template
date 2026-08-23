@@ -59,6 +59,7 @@ PAYLOAD="$(cat <<'JSON'
         "strict_required_status_checks_policy": false,
         "required_status_checks": [
           { "context": "title" },
+          { "context": "workflow-lint" },
           { "context": "rust / rust" },
           { "context": "typescript / typescript" },
           { "context": "elixir / elixir" },

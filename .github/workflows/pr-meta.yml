@@ -82,9 +82,9 @@ jobs:
           gh pr edit "$PR_NUMBER" --add-label "$label" >/dev/null
 
           if [ "$label" = "size/XL" ]; then
-            cat > body.md <<'MSG'
-:warning: This PR changes **500+ lines**. Large PRs are harder to review thoroughly - consider splitting it into independent, mergeable pieces if the change allows it.
-MSG
+            {
+              echo ':warning: This PR changes **500+ lines**. Large PRs are harder to review thoroughly - consider splitting it into independent, mergeable pieces if the change allows it.'
+            } > body.md
             gh pr comment "$PR_NUMBER" --body-file body.md >/dev/null
             rm -f body.md
           fi
