@@ -128,8 +128,9 @@ After the first push:
       With the main-protection ruleset this means: normal PRs squash-merge
       as soon as CI is green; trust-boundary PRs merge automatically once
       a code owner approves.
-- [ ] If GitHub Actions cannot create pull requests (common on org repos),
-      add a `RELEASE_TOKEN` secret (fine-grained PAT or App token with
-      `contents:write` + `pull-requests:write`) — release.yml prefers it over
-      GITHUB_TOKEN automatically.
+- [ ] Allow GitHub Actions to create pull requests (org admins:
+      Organization → Settings → Actions → Workflow permissions → check
+      *Allow GitHub Actions to create and approve pull requests*).
+      release-please needs this to open its Release PRs; without it the
+      Release workflow stays red.
 - [ ] Default branch is `main`.
