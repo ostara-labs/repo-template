@@ -14,7 +14,8 @@ sequenceDiagram
     RP->>H: opens or updates the Release PR<br/>(version bumps + CHANGELOG.md per kept stack)
     Note over H: review when ready to publish
     H->>M: squash-merge the Release PR
-    M->>GH: tags v<version> + publishes GitHub Release<br/>with generated notes
+    M->>RP: push event (App reacts to main)
+    RP->>GH: create tag v<version><br/>+ publish GitHub Release with generated notes
 ```
 
 ## TL;DR
