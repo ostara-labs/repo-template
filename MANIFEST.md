@@ -110,5 +110,9 @@ After the first push, enable in GitHub:
       `ci` and `gitleaks`.
 - [ ] Secret scanning with push protection: ON.
 - [ ] Dependabot alerts: ON.
+- [ ] If GitHub Actions cannot create pull requests (common on org repos),
+      add a `RELEASE_TOKEN` secret (fine-grained PAT or App token with
+      `contents:write` + `pull-requests:write`) — release.yml prefers it over
+      GITHUB_TOKEN automatically.
 - [ ] CODEOWNERS enforced.
 - [ ] Default branch is `main`.
