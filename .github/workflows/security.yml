@@ -30,10 +30,10 @@ jobs:
       - name: Install gitleaks
         shell: bash
         run: |
-          curl -sSfL -o gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz
+          curl -sSfL -o gitleaks_8.28.0_linux_x64.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz
           curl -sSfL -o checksums.txt https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_checksums.txt
           grep "gitleaks_8.28.0_linux_x64.tar.gz" checksums.txt | sha256sum --check --status -
-          tar -xzf gitleaks.tar.gz gitleaks
+          tar -xzf gitleaks_8.28.0_linux_x64.tar.gz gitleaks
 
       - name: Scan for secrets (full history)
         run: ./gitleaks detect --source . --redacted --verbose --exit-code 1
