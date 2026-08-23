@@ -38,11 +38,8 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/dependabot.yml | Dependency updates | Adapt (delete per-stack sections) |
 | .github/pull_request_template.md | PR template | Keep |
 | .github/ISSUE_TEMPLATE/ | Issue templates | Keep |
-| .github/workflows/ci.yml | Main CI; one job block per stack | Adapt (delete per-stack job blocks) |
-| .github/workflows/rust-ci.yml | Reusable Rust workflow | Delete-if-unused |
-| .github/workflows/typescript-ci.yml | Reusable TypeScript workflow | Delete-if-unused |
-| .github/workflows/elixir-ci.yml | Reusable Elixir workflow | Delete-if-unused |
-| .github/workflows/python-ci.yml | Reusable Python workflow | Delete-if-unused |
+| .github/workflows/ci.yml | Main CI; thin callers to devtools + workflow-lint gate | Adapt (delete per-stack caller jobs) |
+| .devtools/ (submodule) | Shared makefiles, workflows, hooks — ostara-labs/devtools @ v1.0.0 | Keep (update via `make devtools-update`) |
 | .github/workflows/security.yml | gitleaks scan | Keep |
 | .github/workflows/release.yml | release-please | Keep |
 | .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
@@ -85,12 +82,14 @@ To remove a stack (example: Rust), delete all of the following — no Makefile
 edits are needed:
 
 1. The stack directory (`rust/`).
-2. `.github/workflows/rust-ci.yml`.
-3. The Rust job block in `.github/workflows/ci.yml`.
-4. The Rust section in `.github/dependabot.yml`.
-5. The Rust entry in `release-please-config.json` and
+2. The Rust caller job in `.github/workflows/ci.yml`.
+3. The Rust section in `.github/dependabot.yml`.
+4. The Rust entry in `release-please-config.json` and
    `.release-please-manifest.json`.
-6. Mentions in README.md and CONTRIBUTING.md.
+5. Mentions in README.md and CONTRIBUTING.md.
+
+(The Rust logic itself lives centrally in the devtools submodule — nothing
+to delete there; the caller job is what gates it.)
 
 Repeat for each stack you do not keep.
 

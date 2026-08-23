@@ -30,10 +30,10 @@ and release-please entries (see MANIFEST.md) — with zero Makefile edits.
 flowchart LR
     A[Source: stack dirs + Makefile] --> B[Local: make ci + pre-commit]
     B --> C[GitHub Actions: ci.yml]
-    C --> D[rust-ci.yml]
-    C --> E[typescript-ci.yml]
-    C --> F[elixir-ci.yml]
-    C --> G[python-ci.yml]
+    C --> D[devtools: rust-ci.yml]
+    C --> E[devtools: typescript-ci.yml]
+    C --> F[devtools: elixir-ci.yml]
+    C --> G[devtools: python-ci.yml]
     D --> H[Merge to main]
     E --> H
     F --> H
