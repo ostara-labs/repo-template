@@ -64,6 +64,7 @@ jobs:
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       # gitleaks-action requires a paid license on organization repos; run the
       # binary directly instead (checksum-verified download).
@@ -75,8 +76,32 @@ jobs:
           grep "gitleaks_8.28.0_linux_x64.tar.gz" checksums.txt | sha256sum --check --status -
           tar -xzf gitleaks_8.28.0_linux_x64.tar.gz gitleaks
 
+      # Incremental range per event. Config + ignore are taken from the
+      # TRUSTED base commit only: a PR cannot whitelist its own secrets via
+      # .gitleaks.toml/.gitleaksignore smuggled in the head tree.
       - name: Scan for secrets
-        run: ./gitleaks git --verbose --redact --exit-code 1 .
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          IGNORE=/tmp/gitleaksignore
+          if ! git show "$BASE_SHA:.gitleaksignore" > "$IGNORE" 2>/dev/null; then
+            printf '' > "$IGNORE"
+          fi
+          CONFIG=()
+          if git cat-file -e "$BASE_SHA:.gitleaks.toml" 2>/dev/null; then
+            git show "$BASE_SHA:.gitleaks.toml" > /tmp/gitleaks.toml
+            CONFIG=(--config /tmp/gitleaks.toml)
+          else
+            # no trusted config: forbid head-side autodiscovery override
+            rm -f .gitleaks.toml gitleaks.toml
+          fi
+          LOG_OPTS=()
+          if [ -n "$BASE_SHA" ] && [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            LOG_OPTS=(--log-opts="$BASE_SHA..HEAD")
+          fi
+          ./gitleaks git "${LOG_OPTS[@]}" "${CONFIG[@]}" --verbose --redact \
+            --exit-code 1 --gitleaks-ignore-path "$IGNORE" .
 
   # Universal merge gate: every repository built from this template exposes
   # exactly this context to the org ruleset. Composition may evolve; the
