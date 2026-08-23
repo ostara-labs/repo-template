@@ -53,7 +53,7 @@ Conventional Commits.
 |---|---|
 | Local entrypoint | Makefile (canonical targets: help, hooks, format, lint, test, build, ci, clean) |
 | Local hooks | .pre-commit-config.yaml |
-| CI | .github/workflows/ci.yml + per-stack reusable workflows |
+| CI | ci.yml (thin callers + workflow-lint gate); stack logic in devtools workflows |
 | Security scan | .github/workflows/security.yml + .gitleaks.toml |
 | Releases | .github/workflows/release.yml + release-please-config.json |
 | Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md |

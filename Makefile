@@ -9,9 +9,7 @@
 #   git add .devtools && git commit   # then ship the bump in a PR
 #
 # Windows: GNU Make >= 4 (choco install make); recipes are POSIX (Git Bash).
-
-SHELL      ?= /bin/bash
-.SHELLFLAGS ?= -eu -o pipefail -c
+# Shell config (bash + pipefail) is provided by Makefile.common.
 
 include .devtools/makefiles/Makefile.common
 include .devtools/makefiles/Makefile.rust
