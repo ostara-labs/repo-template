@@ -4,12 +4,12 @@
 sequenceDiagram
     participant C as Contributor / Agent
     participant M as main
-    participant RP as release-please (release.yml)
+    participant RP as release-please App
     participant H as Human maintainer
     participant GH as GitHub Releases
 
     C->>M: merge PR(s) with Conventional Commit titles
-    M->>RP: push event triggers release.yml
+    M->>RP: push event (App reacts to main)
     RP->>RP: compute next semver per stack<br/>(feat = minor, fix/perf = patch, feat! = major)
     RP->>H: opens or updates the Release PR<br/>(version bumps + CHANGELOG.md per kept stack)
     Note over H: review when ready to publish
@@ -37,9 +37,9 @@ automatically. No manual `git tag`, no hand-written changelog, ever.
 
 ## Failure modes
 
-- **Release workflow red** - usually means GitHub Actions is not allowed
-  to create pull requests (common under org policies). Remedy: set the
-  `RELEASE_TOKEN` secret or enable the org setting (see MANIFEST.md,
-  post-bootstrap hardening).
 - **No Release PR appears** - normal when only non-bumping commits
-  (`docs:`, `chore:`...) landed since the last release.
+  (`docs:`, `chore:`...) landed since the last release. Otherwise check
+  that the release-please App is installed on the repository and has
+  access to it.
+- **Wrong version** - fix forward via a follow-up Release PR; tags are
+  immutable.
