@@ -47,6 +47,7 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/workflows/release.yml | release-please | Keep |
 | .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
 | .github/workflows/pr-meta.yml | PR title lint + size/risk labels | Keep |
+| .coderabbit.yaml | AI review config (free on public repos) | Keep |
 | release-please-config.json | Release config; one entry per stack | Adapt (delete per-stack entries) |
 | .release-please-manifest.json | Release manifest; one entry per stack | Adapt (delete per-stack entries) |
 
@@ -122,6 +123,11 @@ After the first push:
       and the `requires-human-review` label.
 - [ ] Secret scanning with push protection: ON.
 - [ ] Dependabot alerts: ON.
+- [ ] Auto-merge: ON (Settings → General → Pull Requests → *Allow
+      auto-merge*, squash only, commit title = PR title, delete branches).
+      With the main-protection ruleset this means: normal PRs squash-merge
+      as soon as CI is green; trust-boundary PRs merge automatically once
+      a code owner approves.
 - [ ] If GitHub Actions cannot create pull requests (common on org repos),
       add a `RELEASE_TOKEN` secret (fine-grained PAT or App token with
       `contents:write` + `pull-requests:write`) — release.yml prefers it over
