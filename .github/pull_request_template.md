@@ -1,24 +1,38 @@
-## Summary
+<!-- Classification (size/S-M-L-XL, risk/low-medium-high) is computed by CI -
+     no boxes to tick for what a machine computes better. The title is linted
+     by CI too: Conventional Commits (`type(scope)!: subject`). -->
 
-<!-- Describe the purpose of this pull request. -->
+## Need
 
-## Related issues
+<!-- What problem or need does this address? One synthetic paragraph.
+     Link the issue/request if one exists. -->
 
-<!-- Link any related issues, e.g. `Closes #123`. -->
+## Answer
 
-Closes #
+<!-- How does this PR answer that need? Key decisions and their rationale,
+     written so someone outside the change can follow. -->
 
-## Type of change
+## Visual
 
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Docs
-- [ ] CI/tooling
+<!-- Encouraged whenever the change has structure or a UI surface.
+     Mermaid renders natively on GitHub:
 
-## Checklist
+```mermaid
+flowchart LR
+    A[Before] -->|this PR| B[After]
+```
 
-- [ ] Title follows Conventional Commits (e.g. `feat:`, `fix:`, `docs:`)
-- [ ] `make ci` passed locally
-- [ ] Docs updated
-- [ ] MANIFEST.md updated if the repository structure changed
+Screenshots (before / after) for anything visible:
+
+| Before | After |
+|---|---|
+|  |  |
+-->
+
+## Validation
+
+<!-- How was this verified? Commands run, tests added, manual steps. -->
+
+## Breaking changes
+
+<!-- none, or what breaks + migration notes -->
