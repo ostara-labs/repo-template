@@ -123,6 +123,11 @@ After the first push:
       and the `requires-human-review` label.
 - [ ] Secret scanning with push protection: ON.
 - [ ] Dependabot alerts: ON.
+- [ ] Auto-merge: ON (Settings → General → Pull Requests → *Allow
+      auto-merge*, squash only, commit title = PR title, delete branches).
+      With the main-protection ruleset this means: normal PRs squash-merge
+      as soon as CI is green; trust-boundary PRs merge automatically once
+      a code owner approves.
 - [ ] If GitHub Actions cannot create pull requests (common on org repos),
       add a `RELEASE_TOKEN` secret (fine-grained PAT or App token with
       `contents:write` + `pull-requests:write`) — release.yml prefers it over
