@@ -44,9 +44,9 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/workflows/elixir-ci.yml | Reusable Elixir workflow | Delete-if-unused |
 | .github/workflows/python-ci.yml | Reusable Python workflow | Delete-if-unused |
 | .github/workflows/security.yml | gitleaks scan | Keep |
+| .github/workflows/release.yml | release-please | Keep |
 | .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
 | .github/workflows/pr-meta.yml | PR title lint + size/risk labels | Keep |
-| release-please App | Release automation (install from Marketplace) | Keep |
 | .coderabbit.yaml | AI review config (free on public repos) | Keep |
 | release-please-config.json | Release config; one entry per stack | Adapt (delete per-stack entries) |
 | .release-please-manifest.json | Release manifest; one entry per stack | Adapt (delete per-stack entries) |
@@ -128,8 +128,9 @@ After the first push:
       With the main-protection ruleset this means: normal PRs squash-merge
       as soon as CI is green; trust-boundary PRs merge automatically once
       a code owner approves.
-- [ ] Install the **release-please** GitHub App on this repository
-      (https://github.com/apps/release-please). It replaces the old
-      release.yml workflow and uses its own installation token, so it works
-      even on org repos that block Actions-created pull requests.
+- [ ] Allow GitHub Actions to create pull requests (org admins:
+      Organization → Settings → Actions → Workflow permissions → check
+      *Allow GitHub Actions to create and approve pull requests*).
+      release-please needs this to open its Release PRs; without it the
+      Release workflow stays red.
 - [ ] Default branch is `main`.
