@@ -1,9 +1,9 @@
 name: Security
 
+# Periodic deep scans only: PR-time and push-time secret scanning moved to
+# ci.yml so the single required `gate` context covers them.
+
 on:
-  pull_request:
-  push:
-    branches: [main]
   schedule:
     - cron: "17 4 * * 1"
   workflow_dispatch:
