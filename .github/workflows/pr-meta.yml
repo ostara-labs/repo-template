@@ -2,7 +2,8 @@ name: PR meta
 
 # Automatic PR classification so humans never tick boxes for things a
 # machine computes better:
-#   - title  : enforces Conventional Commits on the PR title (blocking)
+#   - title  : enforces Conventional Commits on the PR title (blocking;
+#              100-char cap, waived for Dependabot PRs)
 #   - size   : labels size/S|size/M|size/L|size/XL from the diff
 #   - risk   : labels risk/low|risk/medium|risk/high (trust-boundary files
 #              => risk/high; docs-only => risk/low)
@@ -27,13 +28,25 @@ jobs:
       - name: Check Conventional Commits title
         env:
           TITLE: ${{ github.event.pull_request.title }}
+          ACTOR: ${{ github.actor }}
         run: |
           set -euo pipefail
           pattern='^(Merge |Revert |fixup! )|^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_./-]+\))?(!)?: .{1,}$'
-          if [ ${#TITLE} -le 100 ] && echo "$TITLE" | grep -qE "$pattern"; then
+          # Dependabot titles are machine-generated and routinely exceed the
+          # 100-char cap ("build(deps): bump X from A to B in the
+          # minor-and-patch group across 1 directory"). The Conventional
+          # Commits pattern still applies; only the length cap is waived.
+          if [ "$ACTOR" = "dependabot[bot]" ]; then
+            length_ok=1
+          elif [ ${#TITLE} -le 100 ]; then
+            length_ok=1
+          else
+            length_ok=0
+          fi
+          if [ "$length_ok" -eq 1 ] && echo "$TITLE" | grep -qE "$pattern"; then
             echo "title ok: $TITLE"
           else
-            echo "PR title must follow Conventional Commits:" >&2
+            echo "PR title must follow Conventional Commits (and stay under 100 chars):" >&2
             echo "  type(scope)!: subject   e.g. 'feat(rust): add retry loop'" >&2
             echo "  types: feat fix docs style refactor perf test build ci chore revert" >&2
             exit 1
