@@ -36,5 +36,9 @@
 /LICENSE                       @oloompa
 /SECURITY.md                   @oloompa
 
+# Security scanning policy
+/.gitleaks.toml                @oloompa
+/.gitleaksignore               @oloompa
+
 # Ruleset provisioning script (grants the protections above)
 /scripts/setup-rulesets.sh     @oloompa
