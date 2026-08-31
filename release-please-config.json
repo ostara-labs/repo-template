@@ -3,16 +3,20 @@
   "packages": {
     "rust": {
       "release-type": "rust",
-      "package-name": "my-app"
+      "package-name": "my-app",
+      "component": "rust"
     },
     "typescript": {
-      "release-type": "node"
+      "release-type": "node",
+      "component": "typescript"
     },
     "elixir": {
-      "release-type": "elixir"
+      "release-type": "elixir",
+      "component": "elixir"
     },
     "python": {
-      "release-type": "python"
+      "release-type": "python",
+      "component": "python"
     }
   }
 }
