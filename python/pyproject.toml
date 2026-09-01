@@ -5,7 +5,7 @@ description = "Placeholder package - rename me."
 requires-python = ">=3.12"
 
 [dependency-groups]
-dev = ["pytest>=9.1.1", "ruff>=0.16.4"]
+dev = ["pytest>=9.1.1", "ruff>=0.16.5"]
 
 [tool.ruff]
 line-length = 100
