@@ -30,9 +30,10 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
    `:my_app`/`MyApp`, and `my-package`/`my_package` with your real names
    (table in MANIFEST.md).
 4. **Install hooks.** `make hooks` (requires pre-commit; see CONTRIBUTING.md).
-5. **Push and harden.** Push to `main`, then enable: branch protection
-   (require PRs + status checks `ci` and `gitleaks`), secret scanning with
-   push protection, and Dependabot alerts. Full checklist in MANIFEST.md.
+5. **Push and harden.** Push to `main`, then provision branch protection
+   with `bash scripts/setup-rulesets.sh <owner>/<repo>` (requires PRs and
+   the `gate` status check), enable secret scanning with push protection,
+   and Dependabot alerts. Full checklist in MANIFEST.md.
 
 ## Commands
 
