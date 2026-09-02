@@ -106,6 +106,10 @@ jobs:
   # Universal merge gate: every repository built from this template exposes
   # exactly this context to the org ruleset. Composition may evolve; the
   # contract ("gate green = mergeable") does not.
+  #
+  # When deleting a stack (see MANIFEST.md "Deleting a stack"), remove its
+  # caller job above AND its name from `needs` below — a `needs` entry
+  # pointing at a deleted job invalidates the whole workflow.
   gate:
     name: gate
     needs: [workflow-lint, gitleaks, rust, typescript, elixir, python]

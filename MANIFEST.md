@@ -38,15 +38,18 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/dependabot.yml | Dependency updates | Adapt (delete per-stack sections) |
 | .github/pull_request_template.md | PR template | Keep |
 | .github/ISSUE_TEMPLATE/ | Issue templates | Keep |
-| .github/workflows/ci.yml | Main CI; thin callers to devtools + workflow-lint gate | Adapt (delete per-stack caller jobs) |
+| .github/workflows/ci.yml | Main CI; thin callers to devtools + workflow-lint gate | Adapt (delete per-stack caller jobs + gate.needs entries) |
 | .devtools/ (submodule) | Shared makefiles, workflows, hooks — ostara-labs/devtools @ v1.0.0 | Keep (update via `make devtools-update`) |
+| .gitmodules | Submodule definition: .devtools -> ostara-labs/devtools @ v1.0.0 | Keep |
 | .github/workflows/security.yml | gitleaks scan | Keep |
 | .github/workflows/release.yml | release-please | Keep |
 | .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
+| .github/trust-boundary.yml | Trust-boundary path patterns; consumed by pr-classify.yml (requires-human-review label) and the main-protection ruleset (code-owner review) | Keep |
 | .github/workflows/pr-meta.yml | PR title lint + size/risk labels | Keep |
 | .coderabbit.yaml | AI review config (free on public repos) | Keep |
 | release-please-config.json | Release config; one entry per stack | Adapt (delete per-stack entries) |
 | .release-please-manifest.json | Release manifest; one entry per stack | Adapt (delete per-stack entries) |
+| scripts/setup-rulesets.sh | Provisions the main-protection ruleset and the requires-human-review label on a fresh repo (run once post-bootstrap) | Keep |
 
 ### Rust
 
@@ -82,7 +85,9 @@ To remove a stack (example: Rust), delete all of the following — no Makefile
 edits are needed:
 
 1. The stack directory (`rust/`).
-2. The Rust caller job in `.github/workflows/ci.yml`.
+2. The Rust caller job in `.github/workflows/ci.yml` — plus the same
+   stack name in the `gate` job's `needs` list (a `needs` entry pointing
+   at a deleted job invalidates the whole workflow).
 3. The Rust section in `.github/dependabot.yml`.
 4. The Rust entry in `release-please-config.json` and
    `.release-please-manifest.json`.
@@ -97,7 +102,7 @@ Repeat for each stack you do not keep.
 
 | Placeholder | Where |
 |---|---|
-| `your-org` | README.md, typescript/package.json, SECURITY.md, CODE_OF_CONDUCT.md |
+| `your-org` | README.md, typescript/package.json, SECURITY.md, CODE_OF_CONDUCT.md, .github/ISSUE_TEMPLATE/config.yml |
 | `@oloompa` | .github/CODEOWNERS (trust-boundary owners) |
 | `my-app` / `my_app` | rust/Cargo.toml, rust/src/lib.rs |
 | `@your-org/my-app` | typescript/package.json |
