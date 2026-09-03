@@ -3,7 +3,8 @@ name: PR meta
 # Automatic PR classification so humans never tick boxes for things a
 # machine computes better:
 #   - title  : enforces Conventional Commits on the PR title (blocking;
-#              100-char cap, waived for Dependabot PRs)
+#              skipped for Dependabot PRs — their titles are machine-
+#              generated "Bump ..." strings that no lint should gate)
 #   - size   : labels size/S|size/M|size/L|size/XL from the diff
 #   - risk   : labels risk/low|risk/medium|risk/high (trust-boundary files
 #              => risk/high; docs-only => risk/low)
@@ -31,19 +32,15 @@ jobs:
           ACTOR: ${{ github.actor }}
         run: |
           set -euo pipefail
-          pattern='^(Merge |Revert |fixup! )|^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_./-]+\))?(!)?: .{1,}$'
-          # Dependabot titles are machine-generated and routinely exceed the
-          # 100-char cap ("build(deps): bump X from A to B in the
-          # minor-and-patch group across 1 directory"). The Conventional
-          # Commits pattern still applies; only the length cap is waived.
+          # Dependabot titles are machine-generated ("Bump X from A to B",
+          # sometimes with a group suffix that also breaks the 100-char
+          # cap). Linting them guards nothing — skip the check entirely.
           if [ "$ACTOR" = "dependabot[bot]" ]; then
-            length_ok=1
-          elif [ ${#TITLE} -le 100 ]; then
-            length_ok=1
-          else
-            length_ok=0
+            echo "title ok (dependabot, skip lint): $TITLE"
+            exit 0
           fi
-          if [ "$length_ok" -eq 1 ] && echo "$TITLE" | grep -qE "$pattern"; then
+          pattern='^(Merge |Revert |fixup! )|^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_./-]+\))?(!)?: .{1,}$'
+          if [ ${#TITLE} -le 100 ] && echo "$TITLE" | grep -qE "$pattern"; then
             echo "title ok: $TITLE"
           else
             echo "PR title must follow Conventional Commits (and stay under 100 chars):" >&2
@@ -73,9 +70,11 @@ jobs:
           git fetch --quiet origin "$BASE_SHA"
 
           # Changed lines excluding lockfiles and generated artifacts.
+          # awk-only: a grep filter under pipefail kills the pipeline when
+          # the diff contains ONLY lockfiles (empty grep output, exit 1) —
+          # awk always prints a sum.
           lines=$(git diff --numstat "$BASE_SHA" "$HEAD_SHA" \
-            | grep -vE '(Cargo\.lock|pnpm-lock\.yaml|mix\.lock|uv\.lock)$' \
-            | awk '{sum+=$1+$2} END {print sum+0}')
+            | awk '$0 !~ /(Cargo\.lock|pnpm-lock\.yaml|mix\.lock|uv\.lock)$/ {sum+=$1+$2} END {print sum+0}')
 
           if   [ "$lines" -lt 10 ]; then label=size/S
           elif [ "$lines" -lt 100 ]; then label=size/M
