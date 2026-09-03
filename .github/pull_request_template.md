@@ -34,6 +34,13 @@ flowchart LR
 
 <!-- How was this verified? Commands run, tests added, manual steps. -->
 
+## Documentation
+
+<!-- The docs-drift check enforces docs/DOC_MAP.yml: mapped code changes
+     must ship with their docs (a mapped doc that does not exist yet must
+     be created). Genuinely no docs needed? Add the `no-docs` label — the
+     bypass is posted as a PR comment for the record. -->
+
 ## Breaking changes
 
 <!-- none, or what breaks + migration notes -->

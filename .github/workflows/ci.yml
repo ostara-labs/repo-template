@@ -49,6 +49,14 @@ jobs:
   python:
     uses: ostara-labs/devtools/.github/workflows/python-ci.yml@4e6b4ee61ee51b86f16d5f2739ce6bb7ae89d3dc # v1.0.0
 
+  # Docs live with the code: the gate reads docs/DOC_MAP.yml — code mapped
+  # there must ship with its docs (MISSING = mapped doc absent: create it;
+  # DRIFT = mapped doc untouched: update one). Bypass via the `no-docs`
+  # label is loud (posted as a PR comment). PRs only: the job is skipped
+  # on push events, which the gate below tolerates.
+  docs-drift:
+    uses: ostara-labs/devtools/.github/workflows/docs-drift.yml@28280cc3e7c06b0e7833b9ac0dc470fed03507b5 # unreleased — devtools#6; pin to the next v1.x tag after merge
+
   # Secrets scanning on every PR and push (weekly full-history scan lives in
   # security.yml). Kept here so the single `gate` context covers everything.
   gitleaks:
@@ -112,7 +120,7 @@ jobs:
   # pointing at a deleted job invalidates the whole workflow.
   gate:
     name: gate
-    needs: [workflow-lint, gitleaks, rust, typescript, elixir, python]
+    needs: [workflow-lint, gitleaks, rust, typescript, elixir, python, docs-drift]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
@@ -122,7 +130,9 @@ jobs:
         run: |
           echo "needs results: $RESULTS"
           for result in $RESULTS; do
-            if [ "$result" != "success" ]; then
+            # "skipped" is a pass: event-conditional jobs (docs-drift runs on
+            # PRs only) may legitimately not run, e.g. on push to main.
+            if [ "$result" != "success" ] && [ "$result" != "skipped" ]; then
               echo "::error::gate did not succeed: $result"
               exit 1
             fi
