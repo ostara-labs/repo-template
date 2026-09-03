@@ -29,13 +29,16 @@ jobs:
       - name: Check Conventional Commits title
         env:
           TITLE: ${{ github.event.pull_request.title }}
-          ACTOR: ${{ github.actor }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
           set -euo pipefail
           # Dependabot titles are machine-generated ("Bump X from A to B",
           # sometimes with a group suffix that also breaks the 100-char
           # cap). Linting them guards nothing — skip the check entirely.
-          if [ "$ACTOR" = "dependabot[bot]" ]; then
+          # Key on the PR AUTHOR, not github.actor: a manual re-run or an
+          # `edited` event is triggered by a human account, and linting the
+          # title then would fail exactly the PRs this exempts.
+          if [ "$AUTHOR" = "dependabot[bot]" ]; then
             echo "title ok (dependabot, skip lint): $TITLE"
             exit 0
           fi
