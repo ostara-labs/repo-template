@@ -17,6 +17,7 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .gitignore | Root ignores (stack ignores live in stack dirs) | Keep |
 | .env.example | Environment template | Keep |
 | .gitleaks.toml | Secret scanning config | Keep |
+| docs/DOC_MAP.yml | Docs-drift map: code-path globs → required docs (consumed by the docs-drift gate) | Keep |
 | README.md | Pitch and quickstart | Adapt |
 | MANIFEST.md | This file | Keep |
 | AGENTS.md | Agent rules | Keep |

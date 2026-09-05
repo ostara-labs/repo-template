@@ -10,8 +10,9 @@
 # The template ships no rules: a template has no domain. Uncomment and
 # adapt as the project grows — keep it small and high-signal (2-6 rules;
 # false positives train people to bypass). To calibrate a new rule
-# without blocking, pass warn: true on the docs-drift job in
-# .github/workflows/ci.yml for a week, then remove it.
+# without blocking, add the no-docs label to affected PRs while
+# validating, or request a warn-mode rollout via the devtools aggregate
+# (the gate lives there now, not in a local ci.yml).
 
 rules: []
 #  - name: data model
