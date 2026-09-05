@@ -24,7 +24,5 @@ test: test-rust test-typescript test-elixir test-python ## Test all present stac
 build: build-rust build-typescript build-elixir build-python ## Build all present stacks
 ci: lint test ## Run lint + test (CI gate)
 clean: clean-rust clean-typescript clean-elixir clean-python ## Clean build artifacts in all present stacks
-hooks: ## Install pre-commit hooks (pre-commit + commit-msg + pre-push)
-	pre-commit install
 
-.PHONY: format deps lint test build ci clean hooks
+.PHONY: format deps lint test build ci clean

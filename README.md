@@ -15,7 +15,7 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
 | Area | Contents |
 |---|---|
 | Stacks | `rust/`, `typescript/`, `elixir/`, `python/` — each optional, auto-detected via its marker file |
-| Tooling | GNU Make, pre-commit, gitleaks, Conventional Commits, release-please |
+| Tooling | GNU Make, gitleaks, Conventional Commits, release-please |
 | CI/CD | GitHub Actions: lint + test per stack, security scan, release automation |
 | Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, ADRs |
 
@@ -29,7 +29,8 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
 3. **Rename placeholders.** Replace `your-org`, `my-app`, `@your-org/my-app`,
    `:my_app`/`MyApp`, and `my-package`/`my_package` with your real names
    (table in MANIFEST.md).
-4. **Install hooks.** `make hooks` (requires pre-commit; see CONTRIBUTING.md).
+4. **Install hooks.** `make hooks` (activates the devtools git hooks —
+   pre-commit, commit-msg, pre-push).
 5. **Push and harden.** Push to `main`, then provision branch protection
    with `bash scripts/setup-rulesets.sh <owner>/<repo>` (requires PRs and
    the `gate` status check), enable secret scanning with push protection,
@@ -40,7 +41,7 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
 | Target | What it does |
 |---|---|
 | `make help` | List all targets |
-| `make hooks` | Install pre-commit hooks |
+| `make hooks` | Activate the devtools git hooks |
 | `make deps` | Install dependencies in all kept stacks |
 | `make format` | Format all kept stacks |
 | `make lint` | Lint all kept stacks |
@@ -55,7 +56,6 @@ Absent stacks print `[target] skipped (no <marker>)` and are ignored.
 ## Requirements
 
 - GNU Make >= 4
-- pre-commit (Python)
 - Toolchains for the stacks you keep: Rust stable (pinned by
   rust-toolchain.toml), Node 22 + pnpm, OTP 27 + Elixir 1.18, uv (Python)
 - **Windows:** `choco install make` for GNU Make >= 4, and Git Bash in PATH —
