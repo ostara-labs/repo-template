@@ -63,6 +63,8 @@ mandatory: loading more dilutes attention.
 
 - Adding/removing/moving a notable file → update its MANIFEST.md row.
 - Changing behavior → update the affected process/architecture doc.
+- Adding a subsystem or module → map it in `docs/DOC_MAP.yml` (the
+  docs-drift CI check enforces the map; see its header for the rules).
 - Finding doc drift while working → fix it in the same PR (the code is
   always the source of truth; stale prose is a bug).
 
