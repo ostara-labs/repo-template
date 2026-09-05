@@ -19,6 +19,24 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
 | CI/CD | GitHub Actions: lint + test per stack, security scan, release automation |
 | Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, ADRs |
 
+## CI: the devtools aggregate model
+
+CI is not defined in this repo. One 3-line caller delegates to the shared
+[devtools aggregate](https://github.com/ostara-labs/devtools):
+
+| Piece | Where | Role |
+|---|---|---|
+| Submodule `.devtools` | repo root | shared hooks, Makefiles, lint configs (pinned to a release tag) |
+| Caller `.github/workflows/ci.yml` | one `gate` job | delegates to the org aggregate, pinned by digest |
+| Six required contexts | branch ruleset | `gate / core`, `gate / rust / rust`, `gate / elixir / elixir`, `gate / typescript / typescript`, `gate / python / python`, `gate / gate` |
+
+Language stacks are auto-detected by marker file — a deleted stack just
+succeeds vacuously. Updating devtools: `make devtools-update` (submodule)
++ move the caller `@SHA` to the matching tag — or let Renovate do both
+(automerge; every devtools change is human-reviewed at the source).
+
+Full documentation: [devtools README](https://github.com/ostara-labs/devtools#how-a-repo-consumes-devtools).
+
 ## Quickstart
 
 1. **Create the repository.** Click "Use this template" on GitHub, or clone
@@ -33,8 +51,8 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
    pre-commit, commit-msg, pre-push).
 5. **Push and harden.** Push to `main`, then provision branch protection
    with `bash scripts/setup-rulesets.sh <owner>/<repo>` (requires PRs and
-   the `gate` status check), enable secret scanning with push protection,
-   and Dependabot alerts. Full checklist in MANIFEST.md.
+   the six `gate / …` status contexts), enable secret scanning with push
+   protection, and Dependabot alerts. Full checklist in MANIFEST.md.
 
 ## Commands
 
