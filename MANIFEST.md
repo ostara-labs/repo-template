@@ -82,19 +82,18 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 ## Deleting a stack
 
 To remove a stack (example: Rust), delete all of the following — no Makefile
-edits are needed:
+or workflow edits are needed:
 
 1. The stack directory (`rust/`).
-2. The Rust caller job in `.github/workflows/ci.yml` — plus the same
-   stack name in the `gate` job's `needs` list (a `needs` entry pointing
-   at a deleted job invalidates the whole workflow).
-3. The Rust section in `.github/dependabot.yml`.
-4. The Rust entry in `release-please-config.json` and
+2. The Rust section in `.github/dependabot.yml`.
+3. The Rust entry in `release-please-config.json` and
    `.release-please-manifest.json`.
-5. Mentions in README.md and CONTRIBUTING.md.
+4. Mentions in README.md and CONTRIBUTING.md.
 
-(The Rust logic itself lives centrally in the devtools submodule — nothing
-to delete there; the caller job is what gates it.)
+(The Rust logic itself lives centrally in the devtools aggregate — nothing
+to delete there either. The aggregate auto-detects stacks by marker file
+and succeeds vacuously for absent ones, so the single caller job in
+`.github/workflows/ci.yml` stays untouched.)
 
 Repeat for each stack you do not keep.
 

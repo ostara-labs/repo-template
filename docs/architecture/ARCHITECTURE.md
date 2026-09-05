@@ -28,32 +28,29 @@ and release-please entries (see MANIFEST.md) — with zero Makefile edits.
 
 ```mermaid
 flowchart LR
-    A[Source: stack dirs + Makefile] --> B[Local: make ci + pre-commit]
-    B --> C[GitHub Actions: ci.yml]
-    C --> D[devtools: rust-ci.yml]
-    C --> E[devtools: typescript-ci.yml]
-    C --> F[devtools: elixir-ci.yml]
-    C --> G[devtools: python-ci.yml]
-    D --> H[Merge to main]
-    E --> H
+    A[Source: stack dirs + Makefile] --> B[Local: make ci + devtools hooks]
+    B --> C[GitHub Actions: ci.yml — single caller]
+    C --> D[devtools aggregate ci.yml]
+    D --> E[Language stacks: rust / elixir / typescript / python]
+    D --> F[gate core + gate aggregation]
+    E --> H[Merge to main]
     F --> H
-    G --> H
     H --> I[release-please]
     I --> J[Tags + CHANGELOG + releases]
 ```
 
-Local gates (pre-commit + `make ci`) and CI gates (ci.yml + security.yml)
-run the same commands, so a green local run predicts a green CI run. Merges
-to main trigger release-please, which derives versions and changelogs from
-Conventional Commits.
+Local gates (devtools pre-commit hooks + `make ci`) and CI gates (the
+aggregate ci.yml + security.yml) run the same commands, so a green local
+run predicts a green CI run. Merges to main trigger release-please,
+which derives versions and changelogs from Conventional Commits.
 
 ## Where things live
 
 | Concern | Location |
 |---|---|
 | Local entrypoint | Makefile (canonical targets: help, hooks, format, lint, test, build, ci, clean) |
-| Local hooks | .pre-commit-config.yaml |
-| CI | ci.yml (thin callers + workflow-lint gate); stack logic in devtools workflows |
+| Local hooks | .devtools/hooks via `core.hooksPath` (set by `make hooks`) |
+| CI | ci.yml (one caller job); all stack logic in the devtools aggregate |
 | Security scan | .github/workflows/security.yml + .gitleaks.toml |
 | Releases | .github/workflows/release.yml + release-please-config.json |
 | Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md |
