@@ -29,16 +29,16 @@ concurrency:
 permissions: {}
 
 jobs:
-  gate:
-    name: gate
+  ci:
+    name: ci
     permissions:
       contents: read
     uses: ostara-labs/devtools/.github/workflows/ci.yml@963c23b29239dfaee577cc391e2c77958a265092 # v1.12.0
 
   ai-review:
     name: ai-review
-    needs: gate
-    if: ${{ !cancelled() && needs.gate.result == 'success' && github.event_name == 'pull_request' && !github.event.pull_request.draft }}
+    needs: ci
+    if: ${{ !cancelled() && needs.ci.result == 'success' && github.event_name == 'pull_request' && !github.event.pull_request.draft }}
     permissions:
       contents: read
       issues: write
@@ -49,7 +49,7 @@ jobs:
 
   merge-gate:
     name: merge-gate
-    needs: [gate, ai-review]
+    needs: [ci, ai-review]
     if: ${{ !cancelled() && github.event_name == 'pull_request' && !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     permissions:
@@ -58,7 +58,7 @@ jobs:
       - name: Verdict
         uses: ostara-labs/devtools/.github/actions/merge-gate-verdict@963c23b29239dfaee577cc391e2c77958a265092 # v1.12.0
         with:
-          ci-result: ${{ needs.gate.result }}
+          ci-result: ${{ needs.ci.result }}
           review-result: ${{ needs.ai-review.result }}
           draft: ${{ github.event.pull_request.draft }}
           labels: ${{ toJSON(github.event.pull_request.labels.*.name) }}
