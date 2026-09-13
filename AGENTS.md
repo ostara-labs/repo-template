@@ -89,22 +89,25 @@ mandatory: loading more dilutes attention.
 
 ## PR maturity loop
 
-Every PR starts as a **draft** and leaves draft state only when mature:
+Every PR starts as a **draft** and becomes reviewable only when mature:
 
 1. `gh pr create --draft` - never open a finished-looking PR on day one.
-2. Ask for a review round: comment `@coderabbitai review` on the PR.
-3. Process EVERY finding:
+2. While the PR is a draft, push freely: `ci` (the devtools aggregate)
+   runs on drafts too and invokes no reviewer.
+3. When the content is complete and `ci / gate` is green, promote it:
+   `gh pr ready`. Promotion is what triggers `ai-review` (the PR-Agent
+   reusable workflow; calibration is org-wide, no local config) and
+   `merge-gate` - neither runs on a draft.
+4. Process EVERY `ai-review` finding:
    - fix the code, or
    - dismiss the thread with a written justification when it is wrong.
-   Silence is not resolution. Resolve threads you addressed.
-4. Push, then go back to step 2. Repeat until a full round produces zero
-   findings and zero open threads.
-5. The PR is **mature** only when ALL of these hold:
-   - no unresolved CodeRabbit comments,
-   - every required check is green,
+   Silence is not resolution. Resolve the threads you addressed.
+5. Push, then go back to step 4. Each push re-runs `ai-review`. Repeat
+   until a full round produces zero findings and zero open threads.
+6. The PR is **mature** only when ALL of these hold:
+   - no unresolved `ai-review` threads,
+   - every required check is green (`ci / gate`, `merge-gate`),
    - size label is `size/L` or smaller (`size/XL` means split the PR).
-6. `gh pr ready` - only now does the PR leave draft state and become
-   reviewable by humans. Humans read mature PRs, not drafts.
 
 AI review informs; it never replaces human approval on trust-boundary
 paths (see CODEOWNERS).
@@ -139,7 +142,7 @@ paths (see CODEOWNERS).
 ## Definition of done
 
 - `make ci` is green locally.
-- PR is mature per the PR maturity loop (no open CodeRabbit comments).
+- PR is mature per the PR maturity loop (no open `ai-review` threads).
 - Docs updated (README, MANIFEST, ADRs as applicable).
 - No unrelated changes in the PR.
 
