@@ -58,6 +58,7 @@ mandatory: loading more dilutes attention.
 | A significant architectural choice | `docs/architecture/decisions/` (write an ADR) |
 | Runtime behavior, "how does X work" | `docs/processes/` |
 | Domain vocabulary or business rules | `docs/domain/` |
+| Product scope, waves, MVP | `specs/` |
 | Opening the PR (format, checklist) | `CONTRIBUTING.md` |
 
 ### Maintenance — keep docs honest in the same PR

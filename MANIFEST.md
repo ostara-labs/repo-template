@@ -29,6 +29,7 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | docs/architecture/ARCHITECTURE.md | Layout and flow | Adapt |
 | docs/architecture/decisions/ | ADRs | Keep |
 | docs/guidelines/, docs/processes/, docs/domain/, docs/how-to/ | Documentation tree (see each README) | Keep |
+| specs/README.md | Product spec skeleton: vision, stack, key concepts, waves, MVP. Structure only — copy and fill per project; delete if unused | Adapt |
 
 ### CI, security, release
 
@@ -105,7 +106,7 @@ Repeat for each stack you do not keep.
 | `:my_app` / `MyApp` | elixir/mix.exs, elixir/lib/ |
 | `my-package` / `my_package` | python/pyproject.toml, python/src/ |
 | `Your Name` | LICENSE |
-| `<repo-name>` | README.md, docs/architecture/ARCHITECTURE.md |
+| `<repo-name>` | README.md, docs/architecture/ARCHITECTURE.md, specs/README.md |
 
 ## Post-bootstrap hardening
 
