@@ -27,14 +27,14 @@ lives in `../guidelines/` and `../architecture/`.
 - **Cut a release** → merge the release-please PR when it appears;
   versions, tags, changelogs are generated
 - **Remove a stack** → delete the directory, then its entries in
-  `.github/workflows/ci.yml`, `dependabot.yml`,
-  `release-please-config.json` (checklist in MANIFEST.md)
+  `dependabot.yml` and `release-please-config.json` (checklist in
+  MANIFEST.md)
 - **Change CI or protected files** → expect the `requires-human-review`
   label; a code-owner approval unlocks merge
 
 ## Troubleshooting
 
-- **Pre-commit hook fails on files I did not touch** → hooks run repo-wide
+- **Git hook fails on files I did not touch** → hooks run repo-wide
   gates (`make lint` / `make test`); investigate and fix the repo-wide
   failure, or follow the approved exception process — never bypass hooks
   with `--no-verify` (see AGENTS.md)

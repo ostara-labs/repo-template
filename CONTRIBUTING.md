@@ -29,11 +29,11 @@ Install only the toolchains for the stacks you keep:
 
 ## Getting started
 
-1. Install pre-commit: `pipx install pre-commit` (or `pip install pre-commit`).
-2. Clone with submodules (or run `git submodule update --init` in an
-   existing clone) — the shared Makefiles live in `.devtools/`.
-3. Install dependencies and hooks: `make deps && make hooks`.
-4. Run the full gate: `make ci`.
+1. Clone with submodules (or run `git submodule update --init` in an
+   existing clone) — the shared Makefiles, workflows and git hooks live
+   in `.devtools/`.
+2. Install dependencies and hooks: `make deps && make hooks`.
+3. Run the full gate: `make ci`.
 
 ## Commit convention
 
