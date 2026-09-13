@@ -63,7 +63,8 @@ PAYLOAD="$(cat <<'JSON'
       "parameters": {
         "strict_required_status_checks_policy": false,
         "required_status_checks": [
-          { "context": "gate" }
+          { "context": "ci / gate" },
+          { "context": "merge-gate" }
         ]
       }
     }

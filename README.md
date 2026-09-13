@@ -5,7 +5,7 @@ A production-grade multi-language repository template: four optional stacks
 pipeline, and one release process. Use it as the starting point for any new
 project — keep the stacks you need, delete the rest, zero Makefile edits.
 
-[![CI](https://github.com/ostara-labs/repo-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ostara-labs/repo-template/actions/workflows/ci.yml)
+[![PR pipeline](https://github.com/ostara-labs/repo-template/actions/workflows/pr-pipeline.yml/badge.svg)](https://github.com/ostara-labs/repo-template/actions/workflows/pr-pipeline.yml)
 [![Security](https://github.com/ostara-labs/repo-template/actions/workflows/security.yml/badge.svg)](https://github.com/ostara-labs/repo-template/actions/workflows/security.yml)
 [![Release](https://img.shields.io/github/v/release/ostara-labs/repo-template)](https://github.com/ostara-labs/repo-template/releases)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/ostara-labs/repo-template/badge)](https://api.scorecard.dev/projects/github.com/ostara-labs/repo-template)
@@ -24,8 +24,9 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
 1. **Create the repository.** Click "Use this template" on GitHub, or clone
    this repository and push it to a new remote.
 2. **Run the selection pass.** Open MANIFEST.md — your first PR is deciding
-   which stacks to keep. Delete the stacks you do not need plus their CI,
-   Dependabot, and release-please entries (exact instructions in MANIFEST.md).
+   which stacks to keep. Delete the stacks you do not need plus their
+   Dependabot and release-please entries (exact instructions in MANIFEST.md;
+   CI needs no edits — the pipeline auto-detects stacks).
 3. **Rename placeholders.** Replace `your-org`, `my-app`, `@your-org/my-app`,
    `:my_app`/`MyApp`, and `my-package`/`my_package` with your real names
    (table in MANIFEST.md).
@@ -33,8 +34,9 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
    pre-commit, commit-msg, pre-push).
 5. **Push and harden.** Push to `main`, then provision branch protection
    with `bash scripts/setup-rulesets.sh <owner>/<repo>` (requires PRs and
-   the `gate` status check), enable secret scanning with push protection,
-   and Dependabot alerts. Full checklist in MANIFEST.md.
+   the `ci / gate` + `merge-gate` status checks), enable secret scanning
+   with push protection, and Dependabot alerts. Full checklist in
+   MANIFEST.md.
 
 ## Trust boundary (CODEOWNERS + ruleset)
 
@@ -90,6 +92,24 @@ Quirks (the rulesets API is inconsistent — learned the hard way):
 
 Live example: [`ostara-labs/bot`](https://github.com/ostara-labs/bot) runs
 this exact ruleset on `main`.
+
+## CI: the PR pipeline
+
+One workflow, [`.github/workflows/pr-pipeline.yml`](.github/workflows/pr-pipeline.yml),
+chains everything a PR needs — no per-stack workflows to maintain:
+
+1. **`ci`** — thin caller to the devtools aggregate (`ostara-labs/devtools`
+   ci.yml), which auto-detects stacks by their marker files and runs
+   lint + test for each one. Adding or removing a stack needs **zero
+   workflow edits**.
+2. **`ai-review`** — AI code review on non-draft PRs (org-wide calibration,
+   no local config needed).
+3. **`merge-gate`** — the final verdict job.
+
+Branch protection requires exactly two status checks: `ci / gate` (the CI
+aggregate) and `merge-gate`. The devtools version is pinned by digest in the
+workflow; update it with `make devtools-update` (moves the submodule), then
+move the digest to the matching tag commit.
 
 ## Commands
 

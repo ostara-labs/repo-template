@@ -21,39 +21,39 @@ file:
 
 The Makefile probes markers at runtime: an absent marker prints
 `[target] skipped (no <marker>)` and the target succeeds. Deleting a stack is
-therefore a pure deletion exercise — the stack dir plus its CI, Dependabot,
-and release-please entries (see MANIFEST.md) — with zero Makefile edits.
+therefore a pure deletion exercise — the stack dir plus its Dependabot and
+release-please entries (see MANIFEST.md) — with zero Makefile or workflow
+edits: the CI aggregate detects stacks by marker file and a deleted stack
+simply stops being probed.
 
 ## Flow
 
 ```mermaid
 flowchart LR
-    A[Source: stack dirs + Makefile] --> B[Local: make ci + pre-commit]
-    B --> C[GitHub Actions: ci.yml]
-    C --> D[devtools: rust-ci.yml]
-    C --> E[devtools: typescript-ci.yml]
-    C --> F[devtools: elixir-ci.yml]
-    C --> G[devtools: python-ci.yml]
-    D --> H[Merge to main]
-    E --> H
-    F --> H
-    G --> H
-    H --> I[release-please]
-    I --> J[Tags + CHANGELOG + releases]
+    A[Source: stack dirs + Makefile] --> B[Local: make ci + devtools git hooks]
+    B --> C[GitHub Actions: pr-pipeline.yml]
+    C --> D[devtools ci.yml: aggregate gate, auto-detects stacks]
+    D --> E[ai-review]
+    E --> F[merge-gate verdict]
+    F --> G[Merge to main]
+    G --> H[release-please]
+    H --> I[Tags + CHANGELOG + releases]
 ```
 
-Local gates (pre-commit + `make ci`) and CI gates (ci.yml + security.yml)
-run the same commands, so a green local run predicts a green CI run. Merges
-to main trigger release-please, which derives versions and changelogs from
-Conventional Commits.
+Local gates (devtools git hooks via `make hooks` + `make ci`) and the CI
+aggregate (`pr-pipeline.yml` → devtools ci.yml, plus security.yml) run the
+same commands, so a green local run predicts a green CI run. The aggregate
+auto-detects stacks by marker file, so keeping or deleting stacks needs no
+workflow edits. Merges to main trigger release-please, which derives
+versions and changelogs from Conventional Commits.
 
 ## Where things live
 
 | Concern | Location |
 |---|---|
 | Local entrypoint | Makefile (canonical targets: help, hooks, format, lint, test, build, ci, clean) |
-| Local hooks | .pre-commit-config.yaml |
-| CI | ci.yml (thin callers + workflow-lint gate); stack logic in devtools workflows |
+| Local hooks | devtools git hooks via `make hooks` (core.hooksPath = .devtools/hooks) |
+| CI | .github/workflows/pr-pipeline.yml (thin caller: ci → ai-review → merge-gate); stack logic in the devtools ci.yml aggregate |
 | Security scan | .github/workflows/security.yml + .gitleaks.toml |
 | Releases | .github/workflows/release.yml + release-please-config.json |
 | Governance | AGENTS.md, CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md |

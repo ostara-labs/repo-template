@@ -5,8 +5,9 @@
 Multi-language template repository: four optional stacks (Rust, TypeScript,
 Elixir, Python) behind one GNU Make entrypoint. Stacks are auto-detected via
 marker files (rust/Cargo.toml, typescript/package.json, elixir/mix.exs,
-python/pyproject.toml); deleting a stack means deleting its dir plus its CI,
-Dependabot, and release-please entries — zero Makefile edits. Distributed via
+python/pyproject.toml); deleting a stack means deleting its dir plus its
+Dependabot and release-please entries — zero Makefile or workflow edits.
+Distributed via
 GitHub "Use this template"; generated projects inherit these rules.
 
 ## Commands
@@ -82,7 +83,8 @@ mandatory: loading more dilutes attention.
 
 - Never commit real secrets or `.env` files. `.env.example` is the only
   committed template.
-- gitleaks runs in pre-commit and CI (security.yml); a leak blocks the PR.
+- gitleaks runs in the devtools git hooks and CI (security.yml); a leak
+  blocks the PR.
 - Report vulnerabilities via SECURITY.md.
 
 ## PR maturity loop
@@ -118,7 +120,8 @@ paths (see CODEOWNERS).
 
 - Add dependencies.
 - Edit `.github/workflows/**`.
-- Change the Makefile contract or `.pre-commit-config.yaml`.
+- Change the Makefile contract or the git-hook wiring (devtools hooks,
+  activated by `make hooks`).
 - Touch LICENSE. (MANIFEST.md maintenance is routine work — see
   Documentation policy above.)
 

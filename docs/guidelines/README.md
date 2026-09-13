@@ -14,7 +14,7 @@ One rule, one authoritative location: this page only points.
 | Rule | Where |
 |---|---|
 | How to contribute, commit format, PR checklist | [CONTRIBUTING.md](../../CONTRIBUTING.md) |
-| Local quality gates (lint on commit, tests on push) | [.pre-commit-config.yaml](../../.pre-commit-config.yaml) |
+| Local quality gates (lint on commit, tests on push) | devtools git hooks — activate with `make hooks` (root [Makefile](../../Makefile)) |
 | Make targets (`make deps`, `make ci`, ...) | root [Makefile](../../Makefile) |
 
 ## Branch & merge policy
@@ -30,7 +30,7 @@ One rule, one authoritative location: this page only points.
 | Rule | Where |
 |---|---|
 | Reporting vulnerabilities (do NOT open an issue) | [SECURITY.md](../../SECURITY.md) |
-| Secret scanning (CI + pre-commit) | gitleaks — config in [.gitleaks.toml](../../.gitleaks.toml) |
+| Secret scanning (CI + local git hooks) | gitleaks — config in [.gitleaks.toml](../../.gitleaks.toml) |
 
 ## Documentation rules
 

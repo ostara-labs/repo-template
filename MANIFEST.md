@@ -11,7 +11,6 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | Path | Purpose | Action |
 |---|---|---|
 | Makefile | Entrypoint; canonical targets (help, hooks, format, lint, test, build, ci, clean) | Keep |
-| .pre-commit-config.yaml | Local hooks: hygiene, gitleaks, conventional commits, no-commit-to-main | Keep |
 | .editorconfig | Editor defaults (LF, indentation) | Keep |
 | .gitattributes | Line endings, linguist hints | Keep |
 | .gitignore | Root ignores (stack ignores live in stack dirs) | Keep |
@@ -39,14 +38,14 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/dependabot.yml | Dependency updates | Adapt (delete per-stack sections) |
 | .github/pull_request_template.md | PR template | Keep |
 | .github/ISSUE_TEMPLATE/ | Issue templates | Keep |
-| .github/workflows/ci.yml | Main CI; thin callers to devtools + workflow-lint gate | Adapt (delete per-stack caller jobs + gate.needs entries) |
-| .devtools/ (submodule) | Shared makefiles, workflows, hooks — ostara-labs/devtools @ v1.0.0 | Keep (update via `make devtools-update`) |
-| .gitmodules | Submodule definition: .devtools -> ostara-labs/devtools @ v1.0.0 | Keep |
+| .github/workflows/pr-pipeline.yml | PR pipeline: ci (devtools aggregate, auto-detects stacks) → ai-review → merge-gate | Keep |
+| .devtools/ (submodule) | Shared makefiles, workflows, git hooks, CI aggregate — ostara-labs/devtools @ v1.12.0 | Keep (update via `make devtools-update`) |
+| .gitmodules | Submodule definition: .devtools -> ostara-labs/devtools @ v1.12.0 | Keep |
 | .github/workflows/security.yml | gitleaks scan | Keep |
 | .github/workflows/release.yml | release-please | Keep |
 | .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
 | .github/trust-boundary.yml | Trust-boundary path patterns; consumed by pr-classify.yml (requires-human-review label) and the main-protection ruleset (code-owner review) | Keep |
-| .github/workflows/pr-meta.yml | PR title lint + size/risk labels | Keep |
+| .github/workflows/pr-meta.yml | Thin caller to devtools pr-meta: PR title lint + size/risk labels | Keep |
 | .coderabbit.yaml | AI review config (free on public repos) | Keep |
 | release-please-config.json | Release config; one entry per stack | Adapt (delete per-stack entries) |
 | .release-please-manifest.json | Release manifest; one entry per stack | Adapt (delete per-stack entries) |
@@ -83,19 +82,16 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 ## Deleting a stack
 
 To remove a stack (example: Rust), delete all of the following — no Makefile
-edits are needed:
+or workflow edits are needed:
 
 1. The stack directory (`rust/`).
-2. The Rust caller job in `.github/workflows/ci.yml` — plus the same
-   stack name in the `gate` job's `needs` list (a `needs` entry pointing
-   at a deleted job invalidates the whole workflow).
-3. The Rust section in `.github/dependabot.yml`.
-4. The Rust entry in `release-please-config.json` and
+2. The Rust section in `.github/dependabot.yml`.
+3. The Rust entry in `release-please-config.json` and
    `.release-please-manifest.json`.
-5. Mentions in README.md and CONTRIBUTING.md.
+4. Mentions in README.md and CONTRIBUTING.md.
 
-(The Rust logic itself lives centrally in the devtools submodule — nothing
-to delete there; the caller job is what gates it.)
+(The Rust CI logic lives centrally in the devtools submodule and detects
+stacks by marker file — a deleted stack simply stops being probed.)
 
 Repeat for each stack you do not keep.
 
