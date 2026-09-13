@@ -151,6 +151,7 @@ tree below (guidelines first).
 - docs/processes/ — process and code-walkthrough docs (code wins over prose)
 - docs/domain/ — business-domain concepts and glossary (fill after bootstrap)
 - docs/how-to/ — task-oriented recipes for humans
+- specs/ — product spec skeleton (vision, waves, MVP) — fill it per project
 
 ## License
 
