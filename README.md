@@ -36,6 +36,61 @@ project — keep the stacks you need, delete the rest, zero Makefile edits.
    the `gate` status check), enable secret scanning with push protection,
    and Dependabot alerts. Full checklist in MANIFEST.md.
 
+## Trust boundary (CODEOWNERS + ruleset)
+
+Normal PRs (code, docs, dependency bumps) merge without human approval.
+PRs that touch trust-boundary paths — CI pipelines, dependency policy,
+release automation, review routing, governance files — require an explicit
+approval from a listed code owner. The paths are declared in
+[`.github/CODEOWNERS`](.github/CODEOWNERS) and mirrored by
+[`.github/trust-boundary.yml`](.github/trust-boundary.yml), which labels
+such PRs `requires-human-review`.
+
+CODEOWNERS on its own blocks nothing, and "Use this template" copies files
+only — repository settings are not inherited. After creating your repo,
+create the `trust-boundary-codeowner-review` ruleset via the API:
+
+```bash
+gh api repos/{owner}/{repo}/rulesets --method POST --input - <<'JSON'
+{
+  "name": "trust-boundary-codeowner-review",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] }
+  },
+  "bypass_actors": [
+    { "actor_id": 51793308, "actor_type": "User", "bypass_mode": "always" }
+  ],
+  "rules": [
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "require_code_owner_review": true,
+        "dismiss_stale_reviews_on_push": true,
+        "allowed_merge_methods": ["squash", "merge", "rebase"]
+      }
+    }
+  ]
+}
+JSON
+```
+
+Quirks (the rulesets API is inconsistent — learned the hard way):
+
+- `conditions` is an **object**, not an array: nest `ref_name` directly.
+- Updating an existing ruleset is a **`PUT`** to
+  `/repos/{owner}/{repo}/rulesets/{id}`; **`PATCH` returns 404**.
+- `bypass_actors` is `Oloompa` (actor_id `51793308`), so the owning identity
+  can bypass the code-owner requirement; it is independent of the
+  `main-protection` ruleset that
+  [`scripts/setup-rulesets.sh`](scripts/setup-rulesets.sh) creates — run
+  both.
+
+Live example: [`ostara-labs/bot`](https://github.com/ostara-labs/bot) runs
+this exact ruleset on `main`.
+
 ## Commands
 
 | Target | What it does |
