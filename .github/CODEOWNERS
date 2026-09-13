@@ -4,9 +4,10 @@
 # mandatory human approval. Files on the TRUST BOUNDARY - CI pipelines,
 # dependency policy, release automation, security governance - require
 # explicit approval from a listed owner. Enforcement lives in the
-# "main-protection" branch ruleset ("require review from code owners").
+# "trust-boundary-codeowner-review" repository ruleset (active on the
+# default branch, "require review from code owners").
 #
-# Replace @oloompa with your maintainer identity/team when bootstrapping
+# Replace @Oloompa with your maintainer identity/team when bootstrapping
 # a new project from this template (see MANIFEST.md).
 
 # Default: no global owner. Add one here if you want every file reviewed.
@@ -14,31 +15,26 @@
 
 # --- Trust boundary (human approval required) -----------------------------
 
-# CI/CD pipeline definition and classification config itself
-/.github/workflows/            @oloompa
-/.github/trust-boundary.yml    @oloompa
-
-# Dependency policy
-/.github/dependabot.yml        @oloompa
-
-# Review-routing rules (self-protecting)
-/.github/CODEOWNERS            @oloompa
+# The whole automation and governance surface under .github/: CI/CD
+# workflows, PR classification (trust-boundary.yml), dependency policy,
+# review-routing rules (this file), and PR/issue templates.
+/.github/                      @Oloompa
 
 # Hook configuration (quality gate guardrail). NOTE: /Makefile is
 # deliberately NOT owned - AI agents may extend build targets freely.
-/.pre-commit-config.yaml       @oloompa
+/.pre-commit-config.yaml       @Oloompa
 
 # Release automation
-/release-please-config.json    @oloompa
-/.release-please-manifest.json @oloompa
+/release-please-config.json    @Oloompa
+/.release-please-manifest.json @Oloompa
 
 # Governance and legal
-/LICENSE                       @oloompa
-/SECURITY.md                   @oloompa
+/LICENSE                       @Oloompa
+/SECURITY.md                   @Oloompa
 
 # Security scanning policy
-/.gitleaks.toml                @oloompa
-/.gitleaksignore               @oloompa
+/.gitleaks.toml                @Oloompa
+/.gitleaksignore               @Oloompa
 
 # Ruleset provisioning script (grants the protections above)
-/scripts/setup-rulesets.sh     @oloompa
+/scripts/                      @Oloompa
