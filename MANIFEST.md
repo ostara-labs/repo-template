@@ -40,8 +40,8 @@ decide which stacks to keep, delete the rest, and rename the placeholders.
 | .github/pull_request_template.md | PR template | Keep |
 | .github/ISSUE_TEMPLATE/ | Issue templates | Keep |
 | .github/workflows/pr-pipeline.yml | PR pipeline: ci (devtools aggregate, auto-detects stacks) → ai-review → merge-gate | Keep |
-| .devtools/ (submodule) | Shared makefiles, workflows, git hooks, CI aggregate — ostara-labs/devtools @ v1.12.0 | Keep (update via `make devtools-update`) |
-| .gitmodules | Submodule definition: .devtools -> ostara-labs/devtools @ v1.12.0 | Keep |
+| .devtools/ (submodule) | Shared makefiles, workflows, git hooks, CI aggregate — ostara-labs/devtools @ v1.12.1 | Keep (update via `make devtools-update`) |
+| .gitmodules | Submodule definition: .devtools -> ostara-labs/devtools @ v1.12.1 | Keep |
 | .github/workflows/security.yml | gitleaks scan | Keep |
 | .github/workflows/release.yml | release-please | Keep |
 | .github/workflows/pr-classify.yml | Trust-boundary PR labeling | Keep |
