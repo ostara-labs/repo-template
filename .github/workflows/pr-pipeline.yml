@@ -43,7 +43,7 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    uses: ostara-labs/devtools/.github/workflows/ai-review.yml@4c5f2593b127455822a7f7d150d1832d589c50a5 # v1.12.1
+    uses: ostara-labs/devtools/.github/workflows/ai-review.yml@fccbafce1f55c4bd1574d41115d07fc4fdf39a6e # canary
     secrets:
       AI_REVIEW_OPENROUTER_API_KEY: ${{ secrets.AI_REVIEW_OPENROUTER_API_KEY }}
 
