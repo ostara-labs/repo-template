@@ -1,3 +1,4 @@
+// Path-filter canary: touches rust/ only, nothing else may run.
 /// Returns a greeting for the given name.
 pub fn greet(name: &str) -> String {
     format!("Hello, {name}!")
