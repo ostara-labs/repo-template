@@ -36,7 +36,7 @@ jobs:
     name: ci
     permissions:
       contents: read
-    uses: ostara-labs/devtools/.github/workflows/ci.yml@004c5be3cc3ec0ad9387c76a02586cc979a8a83c # v1.13.6
+    uses: ostara-labs/devtools/.github/workflows/ci.yml@3843f053ad4bc0e272efa6489cdb652f8a7ad2ec # v1.15.0
 
   ai-review:
     name: ai-review
@@ -46,7 +46,7 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    uses: ostara-labs/devtools/.github/workflows/ai-review.yml@004c5be3cc3ec0ad9387c76a02586cc979a8a83c # v1.13.6
+    uses: ostara-labs/devtools/.github/workflows/ai-review.yml@3843f053ad4bc0e272efa6489cdb652f8a7ad2ec # v1.15.0
     secrets:
       AI_REVIEW_OPENROUTER_API_KEY: ${{ secrets.AI_REVIEW_OPENROUTER_API_KEY }}
 
@@ -60,7 +60,7 @@ jobs:
       contents: read
     steps:
       - name: Verdict
-        uses: ostara-labs/devtools/.github/actions/merge-gate-verdict@004c5be3cc3ec0ad9387c76a02586cc979a8a83c # v1.13.6
+        uses: ostara-labs/devtools/.github/actions/merge-gate-verdict@3843f053ad4bc0e272efa6489cdb652f8a7ad2ec # v1.15.0
         with:
           ci-result: ${{ needs.ci.result }}
           review-result: ${{ github.event_name == 'merge_group' && 'success' || needs.ai-review.result }}
